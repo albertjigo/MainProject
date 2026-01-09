@@ -9,9 +9,6 @@ def Homepage(request):
     user = tbl_userreg.objects.get(id=request.session['uid'])
     return render(request,'User/Homepage.html',{'user':user})
 def Myprofile(request):
-
-    
-    
     user=tbl_userreg.objects.get(id=request.session['uid'])
     return render(request,'User/Myprofile.html',{'user':user})
 def Editprofile(request):
