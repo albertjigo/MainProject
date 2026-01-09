@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View More</title>
+</head>
+<body>
+   
+    <table align="center" border="1">
+        <tr>
+            <td>Title</td>
+            <td>{{job.job_title}}</td>
+        </tr>
+        <tr>
+            <td>Details</td>
+            <td>{{job.job_details}}</td>
+        </tr>
+        <tr>
+            <td>Experience</td>
+            <td>{{job.job_experience}}</td>
+        </tr>
+        <tr>
+            <td>Requirement</td>
+            <td>{{job.job_requirment}}</td>
+        </tr>
+        <tr>
+            <td>Job Type</td>
+            <td>{{job.jobtype.jobtype_name}}</td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td>{{job.jobcategory.jobcategory_name}}</td>
+        </tr>
+        <tr>
+            <td>Last date</td>
+            <td>{{job.job_lastdate}}</td>
+        </tr>
+        <tr>
+            <td>Recruiter details</td>
+            <td>{{job.recruiter.recruiter_name}}</td>
+        </tr>
+    </table>
+</body>
+</html>

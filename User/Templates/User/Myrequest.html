@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Request</title>
+</head>
+<body>
+    <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>Job Title</td>
+            <td>Details</td>
+            <td>File</td>
+            <td>Action</td>
+        </tr>
+        {% for i in apply %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.job.job_title}}</td>
+            <td>{{i.job.job_details}}</td>
+            <td><a href="{{i.apply_file.url }}">View File</a></td>
+            <td>{% if i.apply_status == 1 %}Accepted
+                {% elif i.apply_status == 2 %}Rejected
+                {% else %}Pending
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

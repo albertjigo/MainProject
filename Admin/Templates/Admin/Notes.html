@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+</head>
+
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+       {% csrf_token %}
+        <table align="center" border="1">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id="txt_title" required></td>
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input type="text" name="txt_details" id="txt_details" required></td>
+            </tr>
+            <tr>
+                <td>File</td>
+                <td><input type="file" name="file_note" id="file_note" required></td>
+            </tr>
+            <tr>
+                <td>Exam Type</td>
+                <td><select name="sel_et" id="sel_et" required>
+                    <option value="">---SELECT---</option>
+                    {% for i in examtype %}
+                    <option value="{{i.id}}">
+                        {{i.examtype_name}}
+                    </option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>Title</td>
+            <td>Details</td>
+            <td>File</td>
+            <td>Exam type</td>
+            <td>Action</td>
+        </tr>
+        {% for i in notes %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.notes_title}}</td>
+            <td>{{i.notes_details}}</td>
+            <td> <a href="{{i.notes_file.url }}">View File</a></td>
+            <td>{{i.examtype.examtype_name}}</td>
+            <td><a href="{% url 'Admin:notedel' i.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:Notes' %}";
+</script>
+{% endif %}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Job</title>
+</head>
+
+<body>
+    <table border="1" align="center">
+        <tr>
+            <td>Job type: <select name="set_job" id="sel_job" >
+                    <option value="">---select---</option>
+
+                    {% for i in jobtype %}
+                    <option>{{i.jobtype_name}}
+                    </option>
+                    {% endfor %}
+                </select></td>
+            <td>Category: <select name="sel_category" id="sel_category" >
+                    <option>---select---</option>
+                    {% for i in jobcat %}
+                    <option>{{i.jobcategory_name}}
+                    </option>
+                    {% endfor %}
+                </select></td>
+        </tr>
+    </table>
+    <table border="1" align="center">
+        <tr>
+            <td>SI NO</td>
+            <td>Title</td>
+            <td>Details</td>
+            <td>To Date</td>
+            <td>Action</td>
+        </tr>
+        {% for i in job %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.job_title}}</td>
+            <td>{{i.job_details}}</td>
+            <td>{{i.job_lastdate}}</td>
+            <td>
+                <a href="{% url 'User:Viewmore' i.id %}">View More</a>|
+                <a href="{% url 'User:Upload' i.id %}">Apply</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

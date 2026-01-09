@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter verification</title>
+</head>
+<body>
+    <table border="2" align="center">
+        <tr>
+            <td>SI NO</td>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Address</td>
+            <td>Contact</td>
+            <td>District</td>
+            <td>Place</td>
+            <td>Photo</td>
+            <td>Proof</td>
+            <td>Licence</td>
+            <td>Action</td>
+        </tr>
+        {% for i in recruiterdata %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.recruiter_name}}</td>
+            <td>{{i.recruiter_email}}</td>
+            <td>{{i.recruiter_address}}</td>
+            <td>{{i.recruiter_contact}}</td>
+            <td>{{i.place.district.district_name}}</td>
+            <td>{{i.place.place_name}}</td>
+            <td><img src="{{i.recruiter_photo.url}}" alt="150" width="50"  height="50"></td>
+            <td><img src="{{i.recruiter_proof.url}}" alt="150" width="50"  height="50"></td>
+            <td><img src="{{i.recruiter_licence.url}}" alt="150" width="50"  height="50"></td>
+            <td><a href="{% url 'Admin:acceptrecruiter' i.id %}">Accept</a>/<a href="{% url 'Admin:rejectrecruiter' i.id %}">Reject</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% if msg %}
+    <script>
+        alert("{{msg}}");
+        window.location="{% url 'Admin:Recruiterverification' %}";
+    </script>
+{% endif %}

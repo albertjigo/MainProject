@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exam Level</title>
+</head>
+
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table align="center" border="1 ">
+            <tr>
+                <td>Level</td>
+                <td><input type="text" name="txt_level" id="txt_level" value="{{editdata.level_name}}" required></td>
+            </tr>
+            <tr>
+                <td>Duration</td>
+                <td><input type="text" name="txt_duration" id="txt_duration" value="{{editdata.level_duration}}" required></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    <table border="1" align="center">
+        <tr>
+            <td>SI NO</td>
+            <td>Level</td>
+            <td>Duration</td>
+            <td>Action</td>
+        </tr>
+        {% for i in level %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.level_name}}</td>
+            <td>{{i.level_duration}}</td>
+            <td><a href="{% url 'Admin:dellevel' i.id %}">DELETE</a>/<a href="{% url 'Admin:editlevel' i.id %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
+{% if msg %}
+    <script>
+        alert("{{msg}}");
+        window.location="{% url 'Admin:Level' %}";
+    </script>
+{% endif %}

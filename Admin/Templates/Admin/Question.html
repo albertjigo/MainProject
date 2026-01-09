@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        <table align="center" border="1">
+            <tr>
+                <td>Question</td>
+                <td><input type="text" name="txt_question" id="txt_question" required></td>
+            </tr>
+            <tr>
+                <td>File</td>
+                <td><input type="file" name="file_q" id="file_q"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="SUBMIT"></td>
+            </tr>
+        </table>
+    </form>
+    <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>QUESTION</td>
+            <td>FILE</td>
+            <td>ACTION</td>
+        </tr>
+        {% for i in Question %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.question_question}}</td>
+            <td>
+                {% if i.question_file  %}
+                <a href="{{i.question_file.url}}">File</a>
+                {% else  %}    
+                N/A
+                {% endif %}
+            </td>
+            <td><a href="{% url 'Admin:delq' i.id  id %}">Delete</a> <br><a href="{% url 'Admin:Addoption' i.id %}">Add Options</a></td>
+        </tr>
+       {% endfor %}
+    </table>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:Question'  id %}";
+</script>
+{% endif %}

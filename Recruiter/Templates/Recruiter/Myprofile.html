@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+</head>
+
+<body>
+    <table align="center" border="2">
+        <tr>
+            <td colspan="2" align="center"><img src="{{recruiter.recruiter_photo.url}}" width="70" height="72" alt=""></td>
+
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{recruiter.recruiter_name}}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td> {{recruiter.recruiter_email}}</td>
+        </tr>
+        <tr>
+            <td>Conatact</td>
+            <td> {{recruiter.recruiter_contact}} </td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td> {{recruiter.recruiter_address}} </td>
+        </tr>
+        <tr>
+            <td>District</td>
+            <td>{{recruiter.place.district.district_name}}</td>
+        </tr>
+        <tr>
+            <td>Place</td>
+            <td>{{recruiter.place.place_name}}</td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2"> <a href="{% url 'Recruiter:Editprofile' %}">Edit Profile</a>|<a href="{% url 'Recruiter:Changepassword' %}">Change Password</a> </td>
+        </tr>
+    </table>
+</body>
+
+</html>

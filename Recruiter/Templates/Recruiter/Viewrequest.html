@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Request</title>
+</head>
+<body>
+    <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>User Details</td>
+            <td>Job Title</td>
+            <td>Details</td>
+            <td>File</td>
+            <td>Action</td>
+        </tr>
+        {% for i in apply %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.user.user_name}} <br>
+                {{i.user.user_email}} <br>
+                {{i.user.user_contact}} <br>
+                {{i.user.user_address}}</td>
+            <td>{{i.job.job_title}}</td>
+            <td>{{i.job.job_details}}</td>
+            <td><a href="{{i.apply_file.url }}">View File</a></td>
+            <td><a href="{% url 'Recruiter:acceptu' i.id %}">Accept</a>|<a href="{% url 'Recruiter:rejectu' i.id %}">Reject</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Recruiter:Viewrequest' %}";
+</script>
+{% endif %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>SI NO</td>
+            <td>Questions</td>
+            <td></td>
+            <td>Options</td>
+        </tr>
+        {% for i in question %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.question_question}} 
+             </td>
+             <td>
+                
+                {% if i.question_file  %}
+                                <img src="{{i.question_file.url}}" alt="" height="50" width="50">
+
+                {% else %} 
+                N/A
+                {% endif %}
+            </td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

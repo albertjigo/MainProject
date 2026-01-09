@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Notes</title>
+</head>
+<body>
+        <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>Title</td>
+            <td>Details</td>
+            <td>File</td>
+            <td>Exam type</td>
+        </tr>
+        {% for i in notes %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.notes_title}}</td>
+            <td>{{i.notes_details}}</td>
+            <td> <a href="{{i.notes_file.url }}">View File</a></td>
+            <td>{{i.examtype.examtype_name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'User:Viewnotes' %}";
+</script>
+{% endif %}

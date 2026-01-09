@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add option</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+    <Table align="center" border="1">
+        <tr>
+            <td>Options</td>
+            <td><input type="text" name="txt_option" id="txt_option" required></td>
+        </tr>
+        <tr>
+            <td><input type="radio" name="rd" id="rd" value="1">TRUE</td>
+            <td><input type="radio" name="rd" id="rd" value="2">FALSE</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Add"></td>
+        </tr>
+    </Table>
+    </form>
+    <table  align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>OPTIONS</td>
+            <td>ACTION</td>
+        </tr>
+        {% for i in opt %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.option_option}}</td>
+            <td><a href="{% url 'Admin:delo' i.id  id %}">DELETE</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

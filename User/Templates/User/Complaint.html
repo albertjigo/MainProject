@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint</title>
+</head>
+
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table border="2" align="center">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id="txt_title" required></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><input type="text" name="txt_desc" id="txt_desc" required></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    <table border="2" align="center">
+        <tr>
+            <td>SI NO</td>
+            <td>TITLE</td>
+            <td>DESCRIPTION</td>
+            <td>DATE</td>
+            <td>REPLY</td>
+        </tr>
+        {% for i in Complaint %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.complaint_title}}</td>
+            <td>{{i.complaint_desc}}</td>
+            <td>{{i.complaint_date}}</td>
+            <td>
+                {% if i.complaint_status == 1 %}{{i.complaint_reply}}
+                {% elif i.complaint_status == 0 %}NOT REPLIED
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

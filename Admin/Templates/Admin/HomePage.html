@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage </title>
+</head>
+<body>
+    
+    Welcome ..{{Admin.Admin_name}}
+    <table>
+        <tr>
+            <a href="{% url 'Admin:Category' %}">CATEGORY</a>
+            <a href="{% url 'Admin:District' %}">DISTRICT</a>
+            <a href="{% url 'Admin:Examination' %}">EXAMINATION</a>
+            <a href="{% url 'Admin:Examtype' %}">EXAM TYPE</a>
+            <a href="{% url 'Admin:Jobcategory' %}">JOB CATEGORY</a>
+            <a href="{% url 'Admin:Jobtype' %}">JOB TYPE</a>
+            <a href="{% url 'Admin:Level' %}"> EXAM LEVEL</a>
+            <a href="{% url 'Admin:Notes' %}">NOTES</a>
+            <a href="{% url 'Admin:Place' %}">PLACE</a>
+            <a href="{% url 'Admin:Reqruiterverification' %}">RECRUITER VERIFICATION</a>
+            <a href="{% url 'Admin:Subcategory' %}">SUB CATEGORY</a>
+            <a href="{% url 'Admin:Userlist' %}">USER LIST</a>
+            <a href="{% url 'Admin:Viewnotes' %}">VIEW NOTES</a>
+        </tr>
+    </table>
+</body>
+</html>
