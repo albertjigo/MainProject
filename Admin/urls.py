@@ -49,6 +49,5 @@ urlpatterns = [
     path('delo/<int:did>/<int:id>',views.delo,name='delo'),
     path('Viewcomplaint/',views.Viewcomplaint,name="Viewcomplaint"),
     path('Reply/<int:id>',views.Reply,name="Reply"),
-
-
+    path('logout/',views.logout,name="logout"),
 ]

@@ -7,14 +7,27 @@ from User.models import*
 
 
 # Create your views here.
+def logout(request):
+    del request.session['rid']
+    return redirect("Guest:Login")
+
 def Homepage(request):
-    recruiter = tbl_recruiter.objects.get(id=request.session['rid'])
-    return render(request,'recruiter/Homepage.html',{'recruiter':recruiter})
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        recruiter = tbl_recruiter.objects.get(id=request.session['rid'])
+        return render(request,'recruiter/Homepage.html',{'recruiter':recruiter})
 def Myprofile(request):
-    recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
-    return render(request,'recruiter/Myprofile.html',{'recruiter':recruiter})
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
+        return render(request,'recruiter/Myprofile.html',{'recruiter':recruiter})
 def Editprofile(request):
-    recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
     if request.method=="POST":
         name=request.POST.get('txt_name')
         email=request.POST.get('txt_email')
@@ -29,8 +42,11 @@ def Editprofile(request):
     else:
         return render(request,'Recruiter/Editprofile.html',{'recruiter':recruiter})
 def Changepassword(request):
-    recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
-    recruiterpass = recruiter.recruiter_password
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
+        recruiterpass = recruiter.recruiter_password
     if request.method=="POST":
         old=request.POST.get('txt_oldpass')
         new=request.POST.get('txt_newpass')
@@ -47,10 +63,13 @@ def Changepassword(request):
     else:
         return render(request,'Recruiter/Changepassword.html')
 def Job(request):
-    recruiter = tbl_recruiter.objects.get(id=request.session['rid'])
-    jobtype=tbl_jobtype.objects.all()
-    jobcategory=tbl_jobcategory.objects.all()
-    jobdata=tbl_job.objects.all()
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        recruiter = tbl_recruiter.objects.get(id=request.session['rid'])
+        jobtype=tbl_jobtype.objects.all()
+        jobcategory=tbl_jobcategory.objects.all()
+        jobdata=tbl_job.objects.all()
     if request.method=="POST":
         title=request.POST.get('txt_title')
         details=request.POST.get('txt_details')
@@ -90,8 +109,11 @@ def editjob(request,id):
     else:
         return render(request,'Recruiter/Job.html',{'editdata':editdata,'jobtypedata':jobtype,'jobcatdata':jobcategory})
 def Viewrequest(request):
-    apply=tbl_apply.objects.filter(job__recruiter=request.session['rid'])
-    return render(request,'Recruiter/Viewrequest.html',{'apply':apply})
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        apply=tbl_apply.objects.filter(job__recruiter=request.session['rid'])
+        return render(request,'Recruiter/Viewrequest.html',{'apply':apply})
 def acceptu(request,id):
     apply= tbl_apply.objects.get(id=id)
     apply.apply_status=1

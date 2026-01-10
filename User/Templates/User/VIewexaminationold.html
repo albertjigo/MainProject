@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Examination</title>
+</head>
+<body>
+<form method="post" align="center">
+    {% csrf_token %}
+    
+    <select name="examtype">
+        <option value="">-- Select Exam Type --</option>
+        {% for et in examtypes %}
+            <option value="{{ et.id }}">{{ et.examtype_name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Filter">
+</form>
+
+<br>
+
+<table align="center" border="1">
+    <tr>
+        <td>SI NO</td>
+        <td>NAME</td>
+        <td>MARK</td>
+        <td>EXAM TYPE</td>
+        <td>LEVEL</td>
+        <td>ACTION</td>
+    </tr>
+
+    {% for i in exam %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.exam_name }}</td>
+        <td>{{ i.exam_mark }}</td>
+        <td>{{ i.examtype.examtype_name }}</td>
+        <td>{{ i.level.level_name }}</td>
+        <td>
+            <a href="{% url 'User:Viewquestion' i.id %}">Questions</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="6" align="center">No exams found</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

@@ -8,16 +8,13 @@
 </head>
 
 <body>
-    Welcome {{recruiter.recruiter_name}}
-<table>
-<tr></tr>
-    <a href="{% url 'Recruiter:Myprofile' %}">My Profile</a>
-    <a href="{% url 'Admin:Myprofile' %}">MY PROFILE</a>
-    <a href="{% url 'Admin:Job' %}"> ADD JOB</a>
-    <a href="{% url 'Admin:Viewrequest' %}">VIEW REQUEST</a>
-    </tr>
-</table>
+    Welcome {{recruiter.recruiter_name}} <br>
 
+    <a href="{% url 'Recruiter:Myprofile' %}">My Profile</a><br>
+    <a href="{% url 'Recruiter:Myprofile' %}">MY PROFILE</a><br>
+    <a href="{% url 'Recruiter:Job' %}"> ADD JOB</a><br>
+    <a href="{% url 'Recruiter:Viewrequest' %}">VIEW REQUEST</a><br>
+    <a href="{% url 'Recruiter:logout' %}">Logout</a>
 </body>
 
 </html>

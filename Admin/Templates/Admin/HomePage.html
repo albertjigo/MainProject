@@ -7,23 +7,18 @@
 </head>
 <body>
     
-    Welcome ..{{Admin.Admin_name}}
-    <table>
-        <tr>
-            <a href="{% url 'Admin:Category' %}">CATEGORY</a>
-            <a href="{% url 'Admin:District' %}">DISTRICT</a>
-            <a href="{% url 'Admin:Examination' %}">EXAMINATION</a>
-            <a href="{% url 'Admin:Examtype' %}">EXAM TYPE</a>
-            <a href="{% url 'Admin:Jobcategory' %}">JOB CATEGORY</a>
-            <a href="{% url 'Admin:Jobtype' %}">JOB TYPE</a>
-            <a href="{% url 'Admin:Level' %}"> EXAM LEVEL</a>
-            <a href="{% url 'Admin:Notes' %}">NOTES</a>
-            <a href="{% url 'Admin:Place' %}">PLACE</a>
-            <a href="{% url 'Admin:Reqruiterverification' %}">RECRUITER VERIFICATION</a>
-            <a href="{% url 'Admin:Subcategory' %}">SUB CATEGORY</a>
-            <a href="{% url 'Admin:Userlist' %}">USER LIST</a>
-            <a href="{% url 'Admin:Viewnotes' %}">VIEW NOTES</a>
-        </tr>
-    </table>
+    Welcome ..{{Admin.Admin_name}} <br>    
+            <a href="{% url 'Admin:District' %}">DISTRICT</a><br>
+            <a href="{% url 'Admin:Examination' %}">EXAMINATION</a><br>
+            <a href="{% url 'Admin:Examtype' %}">EXAM TYPE</a><br>
+            <a href="{% url 'Admin:Jobcategory' %}">JOB CATEGORY</a><br>
+            <a href="{% url 'Admin:Jobtype' %}">JOB TYPE</a><br>
+            <a href="{% url 'Admin:Level' %}"> EXAM LEVEL</a><br>
+            <a href="{% url 'Admin:Notes' %}">NOTES</a><br>
+            <a href="{% url 'Admin:Place' %}">PLACE</a><br>
+            <a href="{% url 'Admin:Recruiterverification' %}">RECRUITER VERIFICATION</a><br>
+            <a href="{% url 'Admin:Userlist' %}">USER LIST</a><br>
+            <a href="{% url 'Admin:Viewnotes' %}">VIEW NOTES</a><br>
+            <a href="{% url 'Admin:logout' %}">Logout</a><br>
 </body>
 </html>

@@ -4,9 +4,15 @@ from Guest.models import*
 from User.models import*
 
 # Create your views here.
+def logout(request):
+    del request.session['aid']
+    return redirect("Guest:Login")
 def Homepage(request):
-    Admin = tbl_adminreg.objects.get(id=request.session['aid'])
-    return render(request,"Admin/HomePage.html",{'Admin':Admin})
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        Admin = tbl_adminreg.objects.get(id=request.session['aid'])
+        return render(request,"Admin/HomePage.html",{'Admin':Admin})
 
 def Adminregistration(request):
     data=tbl_adminreg.objects.all()
@@ -23,7 +29,10 @@ def Adminregistration(request):
     else:
         return render(request,'Admin/AdminRegistration.html',{"ad":data})
 def District(request):
-    data=tbl_district.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        data=tbl_district.objects.all()
     if request.method=="POST":
         district=request.POST.get('txt_district')
         tbl_district.objects.create(district_name=district)
@@ -31,7 +40,10 @@ def District(request):
     else:        
         return render(request,'Admin/District.html',{"dis":data})
 def Category(request):
-    data=tbl_category.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        data=tbl_category.objects.all()
     if request.method=="POST":
         category=request.POST.get('txt_category')
         checkcategory = tbl_category.objects.filter(category_name=category).count()
@@ -83,8 +95,11 @@ def editadmin(request,id):
     else:
         return render(request,'Admin/AdminRegistration.html',{'editdata':editdata})
 def Place(request):
-    place=tbl_place.objects.all()
-    dist=tbl_district.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        place=tbl_place.objects.all()
+        dist=tbl_district.objects.all()
     if request.method=="POST":
         district=tbl_district.objects.get(id=request.POST.get('sel_district'))
         place=request.POST.get('txt_place')
@@ -93,8 +108,11 @@ def Place(request):
     else:
         return render(request,"Admin/Place.html",{'districtdata':dist,'place':place})
 def Subcategory(request):
-    subcategory=tbl_subcategory.objects.all()
-    cat=tbl_category.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        subcategory=tbl_subcategory.objects.all()
+        cat=tbl_category.objects.all()
     if request.method=="POST":
         category=tbl_category.objects.get(id=request.POST.get('sel_category'))
         subcategory=request.POST.get("txt_sub")
@@ -133,11 +151,17 @@ def editsub(request,id):
     else:
         return render(request,'Admin/Subcategory.html',{'editdata':editdata,'categorydata':category})
 def Userlist(request):
-    user=tbl_userreg.objects.all()
-    return render(request,'Admin/Userlist.html',{'userdata':user})
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        user=tbl_userreg.objects.all()
+        return render(request,'Admin/Userlist.html',{'userdata':user})
 def Recruiterverification(request):
-    recruiter=tbl_recruiter.objects.all()
-    return render(request,'Admin/Recruiterverification.html',{'recruiterdata':recruiter})
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        recruiter=tbl_recruiter.objects.all()
+        return render(request,'Admin/Recruiterverification.html',{'recruiterdata':recruiter})
 def acceptrecruiter(request,id):
     recruiter= tbl_recruiter.objects.get(id=id)
     recruiter.recruiter_status=1
@@ -149,7 +173,10 @@ def rejectrecruiter(request,id):
     recruiter.save()
     return render(request,'Admin/Recruiterverification.html',{'msg':'Rejected'})  
 def Level(request):
-    leveldata=tbl_level.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        leveldata=tbl_level.objects.all()
     if request.method=="POST":
         level=request.POST.get('txt_level')
         duration=request.POST.get('txt_duration')
@@ -173,7 +200,10 @@ def editlevel(request,id):
     else:
         return render(request,'Admin/Level.html',{'editdata':editdata})
 def Jobtype(request):
-    jobdata=tbl_jobtype.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        jobdata=tbl_jobtype.objects.all()
     if request.method=="POST":
         jobtype=request.POST.get('txt_job')
         tbl_jobtype.objects.create(jobtype_name=jobtype)
@@ -194,7 +224,10 @@ def editjt(request,id):
     else:
         return render(request,'Admin/Jobtype.html',{'editdata':editdata})
 def Jobcategory(request):
-    jobcatdata=tbl_jobcategory.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        jobcatdata=tbl_jobcategory.objects.all()
     if request.method=="POST":
         jobcategory=request.POST.get('txt_jobcat')
         tbl_jobcategory.objects.create(jobcategory_name=jobcategory)
@@ -215,7 +248,10 @@ def editjc(request,id):
     else:
         return render(request,'Admin/Jobcategory.html',{'editdata':editdata})
 def Examtype(request):
-    examtdata=tbl_examtype.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        examtdata=tbl_examtype.objects.all()
     if request.method=="POST":
         examtype=request.POST.get('txt_examtype')
         tbl_examtype.objects.create(examtype_name=examtype)
@@ -236,8 +272,11 @@ def editext(request,id):
     else:
         return render(request,'Admin/Examtype.html',{'editdata':editdata})
 def Notes(request):
-    examtype=tbl_examtype.objects.all()
-    notes=tbl_notes.objects.filter(user__isnull=True)
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        examtype=tbl_examtype.objects.all()
+        notes=tbl_notes.objects.filter(user__isnull=True)
     if request.method=="POST":
         title=request.POST.get('txt_title')
         details=request.POST.get('txt_details')
@@ -251,9 +290,12 @@ def notedel(request,id):
     tbl_notes.objects.get(id=id).delete()
     return redirect("Admin:Notes")
 def Viewnotes(request):
-    userdata= tbl_userreg.objects.all()
-    notes=tbl_notes.objects.filter(user__in=userdata)
-    return render(request,'Admin/Viewnotes.html',{'notes':notes})
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        userdata= tbl_userreg.objects.all()
+        notes=tbl_notes.objects.filter(user__in=userdata)
+        return render(request,'Admin/Viewnotes.html',{'notes':notes})
 def acceptnotes(request,id):
     notes= tbl_notes.objects.get(id=id)
     notes.notes_status=1
@@ -265,9 +307,12 @@ def rejectnotes(request,id):
     notes.save()
     return render(request,'Admin/Viewnotes.html',{'msg':'Rejected'})
 def Examination(request):
-    Examtype=tbl_examtype.objects.all()
-    Level=tbl_level.objects.all()
-    exam=tbl_exam.objects.all()
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        Examtype=tbl_examtype.objects.all()
+        Level=tbl_level.objects.all()
+        exam=tbl_exam.objects.all()
     if request.method=='POST':
         name=request.POST.get('txt_name')
         mark=request.POST.get('txt_mark')
@@ -307,9 +352,12 @@ def delo(request,did,id):
     tbl_option.objects.get(id=did).delete()
     return redirect("Admin:Addoption",id)
 def Viewcomplaint(request):
-    comp=tbl_complaint.objects.filter(complaint_status=0)
-    rcomp=tbl_complaint.objects.filter(complaint_status=1)
-    return render(request,'Admin/Viewcomplaint.html',{'comp':comp,'rcomp':rcomp})
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:    
+        comp=tbl_complaint.objects.filter(complaint_status=0)
+        rcomp=tbl_complaint.objects.filter(complaint_status=1)
+        return render(request,'Admin/Viewcomplaint.html',{'comp':comp,'rcomp':rcomp})
 def Reply(request,id):
     complaint=tbl_complaint.objects.get(id=id)
     if request.method=="POST":

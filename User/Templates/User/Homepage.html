@@ -6,17 +6,15 @@
     <title>HomePage</title>
 </head>
 <body>
-    Welcome {{user.user_name}}
+    Welcome {{user.user_name}} <br>
 
-    <table>
-        <tr>
-            <td><a href="{% url 'User:Myprofile' %}">MyProfile</a></td>
-            <td><a href="{% url 'User:Notes' %}"></a>ADD NOTES</td>
-            <td><a href="{% url 'User:Viewjob' %}"></a>VIEW JOB</td>
-            <td><a href="{% url 'User:Myrequest' %}"></a>MY REQUEST</td>
-            <td><a href="{% url 'User:Viewnotes' %}">VIEW NOTES</a></td>
-        </tr>
-        
-    </table>
+            <a href="{% url 'User:Myprofile' %}">MyProfile</a><br>
+            <a href="{% url 'User:Notes' %}">ADD NOTES</a><br>
+            <a href="{% url 'User:Viewjob' %}">VIEW JOB</a><br>
+            <a href="{% url 'User:Myrequest' %}">MY REQUEST</a><br>
+            <a href="{% url 'User:Viewnotes' %}">VIEW NOTES</a><br>
+            <a href="{% url 'User:viewexam' %}">VIEW EXAMINATION</a><br>
+            <a href="{% url 'User:Complaint' %}">COMPLAINT</a><br>
+            <a href="{% url 'User:logout' %}">Logout</a>
 </body>
 </html>

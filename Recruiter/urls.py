@@ -13,4 +13,5 @@ urlpatterns = [
     path('Viewrequest/',views.Viewrequest,name='Viewrequest'),
     path('acceptu/<int:id>',views.acceptu,name='acceptu'),
     path('rejectu/<int:id>',views.rejectu,name='rejectu'),
+    path('logout/',views.logout,name='logout'),
 ]

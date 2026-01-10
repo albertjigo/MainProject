@@ -16,7 +16,15 @@ urlpatterns = [
     path('Upload/<int:id>',views.Upload,name='Upload'),
     path('Myrequest/',views.Myrequest,name='Myrequest'),
     path('delf/<int:id>',views.delf,name='delf'),
-    path('Viewexamination/',views.Viewexamination,name='Viewexamination'),
-    path('Viewquestion/<int:id>',views.Viewquestion,name='Viewquestion'),
+    # path('Viewexamination/',views.Viewexamination,name='Viewexamination'),
+    # path('Viewquestion/<int:id>',views.Viewquestion,name='Viewquestion'),
+
+    path('viewexam/',views.viewexam,name='viewexam'),
+    path('viewquestion/<int:id>',views.viewquestion,name='viewquestion'),
+    path('ajaxexamanswer/',views.ajaxexamanswer,name='ajaxexamanswer'),
+    path('ajaxtimer/',views.ajaxtimer,name='ajaxtimer'),
+    path('successer/',views.successer,name='successer'),
+
+    path('logout/',views.logout,name='logout'),
 
 ]

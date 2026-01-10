@@ -18,7 +18,7 @@ class tbl_subcategory(models.Model):
     category=models.ForeignKey(tbl_category,on_delete=models.CASCADE)
 class tbl_level(models.Model):
     level_name=models.CharField(max_length=50)
-    level_duration=models.CharField(max_length=50)
+    level_duration=models.IntegerField(default=10)
 class tbl_jobtype(models.Model):
     jobtype_name=models.CharField(max_length=50)
 class tbl_jobcategory(models.Model):
