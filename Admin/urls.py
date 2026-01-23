@@ -50,4 +50,7 @@ urlpatterns = [
     path('Viewcomplaint/',views.Viewcomplaint,name="Viewcomplaint"),
     path('Reply/<int:id>',views.Reply,name="Reply"),
     path('logout/',views.logout,name="logout"),
+    path('Notification/',views.Notification,name="Notification"),
+    path('deln/<int:id>',views.deln,name='deln'),
+
 ]

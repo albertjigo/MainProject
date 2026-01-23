@@ -368,3 +368,17 @@ def Reply(request,id):
         return render(request,'Admin/Reply.html',{'msg':'Replied'})
     else:
         return render(request,'Admin/Reply.html')
+def Notification(request):
+    noti=tbl_notification.objects.all()
+    if request.method=="POST":
+        title=request.POST.get("txt_title")
+        details=request.POST.get("txt_details")
+        file=request.FILES.get("file")
+        date=request.POST.get("date")
+        tbl_notification.objects.create(notification_title=title,notification_details=details,notification_file=file,notification_todate=date)   
+        return render(request,'Admin/Notification.html')
+    else:
+        return render(request,'Admin/Notification.html',{"noti":noti})
+def deln(request,id):
+    tbl_notification.objects.get(id=id).delete()
+    return redirect("Admin:Notification")

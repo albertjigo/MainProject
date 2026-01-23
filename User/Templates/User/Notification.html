@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+</head>
+<body>
+    <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>TITLE</td>
+            <td>DETAILS</td>
+            <td>FILE</td>
+            <td>TO DATE</td>
+        </tr>
+        {% for i in noti %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.notification_title}}</td>
+            <td>{{i.notification_details}}</td>
+            <td><a href="{{i.notification_file.url}}">View file</a></td>
+            <td>{{i.notification_todate}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

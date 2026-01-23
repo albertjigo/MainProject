@@ -3,6 +3,8 @@ from Guest.models import *
 from Admin.models import *
 from Recruiter.models import*
 from User.models import*
+from datetime import datetime
+from django.db.models import Q,Max
 
 
 
@@ -124,3 +126,23 @@ def rejectu(request,id):
     apply.apply_status=2
     apply.save()
     return render(request,'Recruiter/Viewrequest.html',{'msg':'Rejected'})
+def chatpage(request,id):
+    user  = tbl_userreg.objects.get(id=id)
+    return render(request,"Recruiter/Chat.html",{"user":user})
+
+def ajaxchat(request):
+    from_recruiter = tbl_recruiter.objects.get(id=request.session["rid"])
+    to_user = tbl_userreg.objects.get(id=request.POST.get("tid"))
+    tbl_chat.objects.create(chat_content=request.POST.get("msg"),chat_time=datetime.now(),recruiter_from=from_recruiter,user_to=to_user,chat_file=request.FILES.get("file"))
+    return render(request,"Recruiter/Chat.html")
+
+def ajaxchatview(request):
+    tid = request.GET.get("tid")
+    recruiter = tbl_recruiter.objects.get(id=request.session["rid"])
+    chat_data = tbl_chat.objects.filter((Q(recruiter_from=recruiter) | Q(recruiter_to=recruiter)) & (Q(user_from=tid) | Q(user_to=tid))).order_by('chat_time')
+    return render(request,"Recruiter/ChatView.html",{"data":chat_data,"tid":int(tid)})
+
+def clearchat(request):
+    tbl_chat.objects.filter(Q(recruiter_from=request.session["rid"]) & Q(user_to=request.GET.get("tid")) | (Q(user_from=request.GET.get("tid")) & Q(recruiter_to=request.session["aid"]))).delete()
+    return render(request,"Recruiter/ClearChat.html",{"msg":"Chat Deleted Sucessfully...."})
+

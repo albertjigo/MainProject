@@ -44,3 +44,15 @@ class tbl_timmer(models.Model):
     timmer = models.TimeField()
     exam = models.ForeignKey(tbl_exam, on_delete=models.CASCADE)
     timmer_status = models.IntegerField(default=0)
+class tbl_chat(models.Model):
+    chat_content = models.CharField(max_length=500)
+    chat_time = models.DateTimeField()
+    chat_file = models.FileField(upload_to='ChatFiles/')
+    user_from = models.ForeignKey(tbl_userreg,on_delete=models.CASCADE,related_name="user_from",null=True)
+    user_to = models.ForeignKey(tbl_userreg,on_delete=models.CASCADE,related_name="user_to",null=True)
+    recruiter_to = models.ForeignKey(tbl_recruiter,on_delete=models.CASCADE,related_name="recruiter_to",null=True)
+    recruiter_from = models.ForeignKey(tbl_recruiter,on_delete=models.CASCADE,related_name="recruiter_from",null=True)
+class tbl_feedback(models.Model):
+    feedback_date=models.DateField(auto_now_add=True)
+    feedback_content=models.CharField(max_length=50)
+    user=models.ForeignKey(tbl_job,on_delete=models.CASCADE)

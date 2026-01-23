@@ -6,12 +6,13 @@ from User.models import *
 from Recruiter.models import*
 from django.http import JsonResponse
 import json
-from datetime import time, datetime, timedelta
+from django.db.models import Q
+from datetime import datetime, timedelta , time, datetime
 
 # Create your views here.
 def logout(request):
     del request.session['uid']
-    return redirect("Guest:Login")
+    return redirect("Guest:index")
 def Homepage(request):
     if "uid" not in request.session:
         return redirect("Guest:Login")
@@ -228,3 +229,27 @@ def ajaxtimer(request):
 
 def successer(request):
     return render(request,"User/Success.html")
+def chatpage(request,id):
+    recruiter  = tbl_recruiter.objects.get(id=id)
+    return render(request,"User/Chat.html",{"recruiter":recruiter})
+
+def ajaxchat(request):
+    from_user = tbl_userreg.objects.get(id=request.session["uid"])
+    to_recruiter = tbl_recruiter.objects.get(id=request.POST.get("tid"))
+    print(to_recruiter)
+    tbl_chat.objects.create(chat_content=request.POST.get("msg"),chat_time=datetime.now(),user_from=from_user,recruiter_to=to_recruiter,chat_file=request.FILES.get("file"))
+    return render(request,"User/Chat.html")
+
+def ajaxchatview(request):
+    tid = request.GET.get("tid")
+    user = tbl_userreg.objects.get(id=request.session["uid"])
+    chat_data = tbl_chat.objects.filter((Q(user_from=user) | Q(user_to=user)) & (Q(recruiter_from=tid) | Q(recruiter_to=tid))).order_by('chat_time')
+    return render(request,"User/ChatView.html",{"data":chat_data,"tid":int(tid)})
+
+def clearchat(request):
+    tbl_chat.objects.filter(Q(user_from=request.session["uid"]) & Q(recruiter_to=request.GET.get("tid")) | (Q(recruiter_from=request.GET.get("tid")) & Q(user_to=request.session["uid"]))).delete()
+    return render(request,"User/ClearChat.html",{"msg":"Chat Deleted Sucessfully...."})
+def Notification(request):
+    noti=tbl_notification.objects.all()
+    return render(request,"User/Notification.html",{"noti":noti})
+

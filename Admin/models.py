@@ -38,3 +38,8 @@ class tbl_option(models.Model):
     option_option=models.CharField(max_length=50)
     option_status=models.IntegerField(default=0)
     question=models.ForeignKey(tbl_question,on_delete=models.CASCADE)
+class tbl_notification(models.Model):
+    notification_title=models.CharField(max_length=50)
+    notification_details=models.CharField(max_length=50)
+    notification_file=models.FileField(upload_to="Assests/Admindocs/Exam/",null=True)
+    notification_todate=models.DateField()

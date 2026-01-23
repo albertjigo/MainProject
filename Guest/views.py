@@ -72,3 +72,5 @@ def Recruiterregistration(request):
             return render(request,'Guest/Recruiterregistration.html',{'msg':'Recruiter Registered'})
     else:
         return render(request,'Guest/Recruiterregistration.html',{'districtdata':district})
+def index(request):
+        return render(request,'Guest/index.html')

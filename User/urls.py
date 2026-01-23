@@ -26,5 +26,10 @@ urlpatterns = [
     path('successer/',views.successer,name='successer'),
 
     path('logout/',views.logout,name='logout'),
-
+    path('chatpage/<int:id>',views.chatpage,name="chatpage"),
+    path('ajaxchat/',views.ajaxchat,name="ajaxchat"),
+    path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
+    path('clearchat/',views.clearchat,name="clearchat"),
+    path('Notification/',views.Notification,name="Notification"),
+  
 ]

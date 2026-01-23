@@ -24,6 +24,7 @@
                 {% elif i.apply_status == 2 %}Rejected
                 {% else %}Pending
                 {% endif %}
+                |<a href="{% url 'User:chatpage' i.job.recruiter.id %}">Chat</a>
             </td>
         </tr>
         {% endfor %}

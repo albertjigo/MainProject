@@ -14,4 +14,8 @@ urlpatterns = [
     path('acceptu/<int:id>',views.acceptu,name='acceptu'),
     path('rejectu/<int:id>',views.rejectu,name='rejectu'),
     path('logout/',views.logout,name='logout'),
+    path('chatpage/<int:id>',views.chatpage,name="chatpage"),
+    path('ajaxchat/',views.ajaxchat,name="ajaxchat"),
+    path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
+    path('clearchat/',views.clearchat,name="clearchat"),
 ]

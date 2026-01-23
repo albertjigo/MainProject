@@ -25,7 +25,8 @@
             <td>{{i.job.job_title}}</td>
             <td>{{i.job.job_details}}</td>
             <td><a href="{{i.apply_file.url }}">View File</a></td>
-            <td><a href="{% url 'Recruiter:acceptu' i.id %}">Accept</a>|<a href="{% url 'Recruiter:rejectu' i.id %}">Reject</a></td>
+            <td><a href="{% url 'Recruiter:acceptu' i.id %}">Accept</a>|<a href="{% url 'Recruiter:rejectu' i.id %}">Reject</a><br>
+            <a href="{% url 'Recruiter:chatpage' i.user.id %}">Chat</a></td>
         </tr>
         {% endfor %}
     </table>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <table align="center" border="1">
+        <tr>
+            <td>Title</td>
+            <td><input type="text" name="txt_title" id="txt_title"></td>
+        </tr>
+        <tr>
+            <td>Details</td>
+            <td><input type="text" name="txt_details" id="txt_details"></td>
+        </tr>
+        <tr>
+            <td>File</td>
+            <td><input type="file" name="file" id="file"></td>
+        </tr>
+        <tr>
+            <td>To date</td>
+            <td><input type="date" name="date" id="date"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input type="submit" value="submit"></td>
+        </tr>
+    </table>
+    </form>
+    <table align="center" border="1">
+        <tr>
+            <td>SI NO</td>
+            <td>TITLE</td>
+            <td>DETAILS</td>
+            <td>FILE</td>
+            <td>TO DATE</td>
+            <td>ACTION</td>
+        </tr>
+        {% for i in noti %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.notification_title}}</td>
+            <td>{{i.notification_details}}</td>
+            <td><a href="{{i.notification_file.url}}">View file</a></td>
+            <td>{{i.notification_todate}}</td>
+            <td><a href="{% url 'Admin:deln' i.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
