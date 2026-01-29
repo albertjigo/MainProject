@@ -1,34 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <table border="1">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Mark</th>   
-            <th>Type</th>
-            <th>Action</th>
-  
-        </tr>
-            {% for i in exam %}
-            <tr>
-             <td>{{forloop.counter}}</td>
-             <td>{{i.exam_name}}</td> 
-             <td>{{i.exam_mark}}</td>  
-             <td>{{i.examtype.examtype_name}}</td> 
-             <td>
-               
-                   
-                        <a href="{% url 'User:viewquestion' i.id %}">Enter To Exam</a>
-                    
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    .exam-page {
+        padding: 30px;
+    }
+
+    .exam-table-wrapper {
+        max-width: 1000px;
+        margin: auto;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    .exam-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .exam-table thead {
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+    }
+
+    .exam-table th {
+        padding: 14px;
+        color: #ffffff;
+        font-size: 15px;
+        text-align: left;
+        letter-spacing: 0.5px;
+    }
+
+    .exam-table td {
+        padding: 14px;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #eef2f3;
+    }
+
+    .exam-table tbody tr:hover {
+        background: #f0fdff;
+        transition: 0.2s ease;
+    }
+
+    .exam-mark {
+        font-weight: 600;
+        color: #05dde9;
+    }
+
+    .exam-type {
+        background: #e8feff;
+        color: #05dde9;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .exam-action a {
+        text-decoration: none;
+        padding: 8px 16px;
+        background: #05dde9;
+        color: #ffffff;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s ease;
+        display: inline-block;
+    }
+
+    .exam-action a:hover {
+        background: #03c7d3;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(5, 221, 233, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .exam-table th,
+        .exam-table td {
+            font-size: 13px;
+            padding: 10px;
+        }
+    }
+</style>
+
+<div class="exam-page">
+    <div class="exam-table-wrapper">
+        <table class="exam-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Exam Name</th>
+                    <th>Mark</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in exam %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.exam_name}}</td>
+                    <td class="exam-mark">{{i.exam_mark}}</td>
+                    <td><span class="exam-type">{{i.examtype.examtype_name}}</span></td>
+                    <td class="exam-action">
+                        <a href="{% url 'User:viewquestion' i.id %}">Enter Exam</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

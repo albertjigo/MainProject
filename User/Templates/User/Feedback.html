@@ -1,35 +1,185 @@
+{% extends 'User/Header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #eef7ff, #f9fbff);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Wrapper */
+        .cs-feedback-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Feedback form card */
+        .cs-feedback-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 40px;
+        }
+
+        .cs-feedback-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #05dde9;
+        }
+
+        /* Input group */
+        .cs-feedback-group {
+            margin-bottom: 18px;
+        }
+
+        .cs-feedback-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .cs-feedback-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .cs-feedback-group textarea:focus {
+            outline: none;
+            border-color: #05dde9;
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+        }
+
+        /* Button */
+        .cs-feedback-btn {
+            padding: 12px 30px;
+            border-radius: 12px;
+            border: none;
+            background: #05dde9;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cs-feedback-btn:hover {
+            background: #05dde9;
+            transform: translateY(-1px);
+        }
+
+        /* Feedback list */
+        .cs-feedback-list {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        .cs-feedback-header,
+        .cs-feedback-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px 120px;
+            padding: 14px 18px;
+            align-items: center;
+        }
+
+        .cs-feedback-header {
+            background: #05dde9;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .cs-feedback-row {
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .cs-feedback-row:last-child {
+            border-bottom: none;
+        }
+
+        .cs-feedback-delete {
+            color: #dc3545;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .cs-feedback-delete:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-    <form action="" method="post">
-        <table>
-            <tr>
-                <td>Content</td>
-                <td><input type="text" name="txt_content" id="txt_content"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="SUBMIT"></td>
-            </tr>
-        </table>
+
+<div class="cs-feedback-wrapper">
+
+    <!-- Feedback Form -->
+    <form method="post" class="cs-feedback-card">
+        {% csrf_token %}
+
+        <div class="cs-feedback-title">Submit Feedback</div>
+
+        <div class="cs-feedback-group">
+            <label>Content</label>
+            <textarea name="txt_content" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="cs-feedback-btn">
+            Submit Feedback
+        </button>
     </form>
-    <table>
-        <tr>
-            <td>SI NO</td>
-            <td>CONTENT</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
+
+    <!-- Feedback List -->
+    <div class="cs-feedback-list">
+
+        <div class="cs-feedback-header">
+            <div>#</div>
+            <div>Content</div>
+            <div>Date</div>
+            <div>Action</div>
+        </div>
+
+        {% for i in feed %}
+        <div class="cs-feedback-row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ i.feedback_content }}</div>
+            <div>{{ i.feedback_date }}</div>
+            <div>
+                <a href="{% url 'User:fdel' i.id %}" class="cs-feedback-delete">
+                    Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'User:Feedback' %}";
+</script>
+{% endif %}
+
 </body>
 </html>
+
+{% endblock %}

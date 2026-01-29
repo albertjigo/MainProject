@@ -1,28 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-    <title>Upload</title>
-</head>
-<body>
-    <form action="" method="post" enctype="multipart/form-data">
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e9feff, #f6ffff);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .cs-upload-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cs-upload-card {
+        width: 420px;
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+    }
+
+    .cs-upload-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 600;
+        color: #05dde9;
+        margin-bottom: 25px;
+    }
+
+    .cs-upload-group {
+        margin-bottom: 20px;
+    }
+
+    .cs-upload-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .cs-upload-input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px dashed #05dde9;
+        font-size: 14px;
+        cursor: pointer;
+        background: #f6feff;
+    }
+
+    .cs-upload-input:hover {
+        background: #e0fcff;
+    }
+
+    .cs-upload-btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        background: #05dde9;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .cs-upload-btn:hover {
+        background: #03c7d3;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(5, 221, 233, 0.4);
+    }
+</style>
+
+<div class="cs-upload-wrapper">
+
+    <form action="" method="post" enctype="multipart/form-data" class="cs-upload-card">
         {% csrf_token %}
-    <table border="1" align="center">
-        <tr>
-            <td>File</td>
-            <td><input type="file" name="file_apply" id="file_apply" required></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="submit"></td>
-        </tr>
-    </table>
+
+        <div class="cs-upload-title">Upload File</div>
+
+        <div class="cs-upload-group">
+            <label class="cs-upload-label" for="file_apply">Select File</label>
+            <input type="file" name="file_apply" id="file_apply" class="cs-upload-input" required>
+        </div>
+
+        <button type="submit" class="cs-upload-btn">Submit</button>
     </form>
-</body>
-</html>
+
+</div>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location = "{% url 'User:Viewjob' %}";
 </script>
 {% endif %}
+
+{% endblock %}

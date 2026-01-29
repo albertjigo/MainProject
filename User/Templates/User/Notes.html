@@ -1,70 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'User/Header.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes</title>
-</head>
+<style>
+    body {
+        background: linear-gradient(135deg, #eef7ff, #f9fbff);
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-<body>
-    <form action="" method="post" enctype="multipart/form-data">
-       {% csrf_token %}
-        <table align="center" border="1">
-            <tr>
-                <td>Title</td>
-                <td><input type="text" name="txt_title" id="txt_title" required></td>
-            </tr>
-            <tr>
-                <td>Details</td>
-                <td><input type="text" name="txt_details" id="txt_details" required></td>
-            </tr>
-            <tr>
-                <td>File</td>
-                <td><input type="file" name="file_note" id="file_note" required></td>
-            </tr>
-            <tr>
-                <td>Exam Type</td>
-                <td><select name="sel_et" id="sel_et" required>
-                    <option value="">---SELECT---</option>
-                    {% for i in examtype %}
-                    <option value="{{i.id}}">
-                        {{i.examtype_name}}
-                    </option>
-                    {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
+    .cs-notes-wrapper {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .cs-notes-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #05dde9;
+        margin-bottom: 20px;
+    }
+
+    /* Upload card */
+    .cs-notes-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
+    }
+
+    .cs-notes-group {
+        margin-bottom: 18px;
+    }
+
+    .cs-notes-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    .cs-notes-group input,
+    .cs-notes-group select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .cs-notes-group input:focus,
+    .cs-notes-group select:focus {
+        outline: none;
+        border-color: #05dde9;
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+    }
+
+    .cs-notes-btn {
+        padding: 12px 30px;
+        border-radius: 12px;
+        border: none;
+        background: #05dde9;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .cs-notes-btn:hover {
+        background: #05dde9;
+        transform: translateY(-1px);
+    }
+
+    /* Notes list */
+    .cs-notes-list {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    .cs-notes-header,
+    .cs-notes-row {
+        display: grid;
+        grid-template-columns: 60px 1.5fr 2fr 1fr 1.5fr 120px;
+        padding: 14px 18px;
+        align-items: center;
+    }
+
+    .cs-notes-header {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .cs-notes-row {
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cs-notes-row:last-child {
+        border-bottom: none;
+    }
+
+    .cs-notes-link {
+        color: #05dde9;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .cs-notes-link:hover {
+        text-decoration: underline;
+    }
+
+    .cs-notes-delete {
+        color: #dc3545;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .cs-notes-delete:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="cs-notes-wrapper">
+
+    <div class="cs-notes-title">Upload Notes</div>
+
+    <!-- Upload Form -->
+    <form method="post" enctype="multipart/form-data" class="cs-notes-card">
+        {% csrf_token %}
+
+        <div class="cs-notes-group">
+            <label>Title</label>
+            <input type="text" name="txt_title" required>
+        </div>
+
+        <div class="cs-notes-group">
+            <label>Details</label>
+            <input type="text" name="txt_details" required>
+        </div>
+
+        <div class="cs-notes-group">
+            <label>File</label>
+            <input type="file" name="file_note" required>
+        </div>
+
+        <div class="cs-notes-group">
+            <label>Exam Type</label>
+            <select name="sel_et" required>
+                <option value="">--- SELECT ---</option>
+                {% for i in examtype %}
+                <option value="{{ i.id }}">{{ i.examtype_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="cs-notes-btn">
+            Submit Notes
+        </button>
     </form>
-    <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>Title</td>
-            <td>Details</td>
-            <td>File</td>
-            <td>Exam type</td>
-            <td>Action</td>
-        </tr>
-        {% for i in notes %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.notes_title}}</td>
-            <td>{{i.notes_details}}</td>
-            <td> <a href="{{i.notes_file.url }}">View File</a></td>
-            <td>{{i.examtype.examtype_name}}</td>
-            <td><a href="{% url 'User:notedel' i.id %}">Delete</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
 
-</html>
+    <!-- Notes List -->
+    <div class="cs-notes-title">My Notes</div>
+
+    <div class="cs-notes-list">
+
+        <div class="cs-notes-header">
+            <div>#</div>
+            <div>Title</div>
+            <div>Details</div>
+            <div>File</div>
+            <div>Exam Type</div>
+            <div>Action</div>
+        </div>
+
+        {% for i in notes %}
+        <div class="cs-notes-row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ i.notes_title }}</div>
+            <div>{{ i.notes_details }}</div>
+            <div>
+                <a href="{{ i.notes_file.url }}" class="cs-notes-link" target="_blank">
+                    View File
+                </a>
+            </div>
+            <div>{{ i.examtype.examtype_name }}</div>
+            <div>
+                <a href="{% url 'User:notedel' i.id %}" class="cs-notes-delete">
+                    Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location = "{% url 'User:Notes' %}";
 </script>
 {% endif %}
+
+{% endblock %}

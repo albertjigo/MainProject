@@ -52,5 +52,5 @@ urlpatterns = [
     path('logout/',views.logout,name="logout"),
     path('Notification/',views.Notification,name="Notification"),
     path('deln/<int:id>',views.deln,name='deln'),
-
+    path('Viewfeedback/',views.Viewfeedback,name="Viewfeedback"),
 ]

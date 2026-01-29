@@ -24,6 +24,9 @@ urlpatterns = [
     path('ajaxexamanswer/',views.ajaxexamanswer,name='ajaxexamanswer'),
     path('ajaxtimer/',views.ajaxtimer,name='ajaxtimer'),
     path('successer/',views.successer,name='successer'),
+    path('my_exam_history/',views.my_exam_history,name='my_exam_history'),
+    path('viewresult/<int:exambodyid>/', views.viewresult, name='viewresult'),
+
 
     path('logout/',views.logout,name='logout'),
     path('chatpage/<int:id>',views.chatpage,name="chatpage"),
@@ -31,5 +34,10 @@ urlpatterns = [
     path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
     path('clearchat/',views.clearchat,name="clearchat"),
     path('Notification/',views.Notification,name="Notification"),
+    path('Feedback/',views.Feedback,name="Feedback"),
+    path('fdel/<int:id>',views.fdel,name='fdel'),
+    path('Ajaxsearchjob/',views.Ajaxsearchjob,name="Ajaxsearchjob"),
+
+
   
 ]

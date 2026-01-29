@@ -1,35 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Notes</title>
-</head>
-<body>
-        <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>Title</td>
-            <td>Details</td>
-            <td>File</td>
-            <td>Exam type</td>
-        </tr>
-        {% for i in notes %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.notes_title}}</td>
-            <td>{{i.notes_details}}</td>
-            <td> <a href="{{i.notes_file.url }}">View File</a></td>
-            <td>{{i.examtype.examtype_name}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
+{% extends 'User/Header.html' %}
+{% block content %}
 
-</html>
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    .notes-wrapper {
+        max-width: 1100px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    .notes-header {
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+        padding: 18px 25px;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .notes-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .notes-table th {
+        background: #f0fdff;
+        padding: 14px;
+        font-size: 14px;
+        color: #444;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .notes-table td {
+        padding: 14px;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #eef2f3;
+    }
+
+    .notes-table tbody tr:hover {
+        background: #f7feff;
+        transition: 0.25s ease;
+    }
+
+    .notes-title {
+        font-weight: 600;
+        color: #222;
+    }
+
+    .notes-type {
+        background: #e8feff;
+        color: #05dde9;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .notes-action a {
+        text-decoration: none;
+        padding: 7px 14px;
+        background: #05dde9;
+        color: #ffffff;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+    .notes-action a:hover {
+        background: #03c7d3;
+        box-shadow: 0 8px 18px rgba(5, 221, 233, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .notes-table th,
+        .notes-table td {
+            font-size: 13px;
+            padding: 10px;
+        }
+    }
+</style>
+
+<div class="notes-wrapper">
+    <div class="notes-header">
+        Shared Notes
+    </div>
+
+    <table class="notes-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Details</th>
+                <th>File</th>
+                <th>Exam Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in notes %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td class="notes-title">{{i.notes_title}}</td>
+                <td>{{i.notes_details}}</td>
+                <td class="notes-action">
+                    <a href="{{i.notes_file.url}}">View File</a>
+                </td>
+                <td><span class="notes-type">{{i.examtype.examtype_name}}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location = "{% url 'User:Viewnotes' %}";
 </script>
 {% endif %}
+
+{% endblock %}

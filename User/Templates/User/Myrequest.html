@@ -1,33 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Request</title>
-</head>
-<body>
-    <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>Job Title</td>
-            <td>Details</td>
-            <td>File</td>
-            <td>Action</td>
-        </tr>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #eef7ff, #f9fbff);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .cs-request-wrapper {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .cs-request-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #05dde9;
+        margin-bottom: 20px;
+    }
+
+    /* Table container */
+    .cs-request-table {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    .cs-request-header,
+    .cs-request-row {
+        display: grid;
+        grid-template-columns: 70px 1.5fr 2fr 1fr 2fr;
+        padding: 14px 18px;
+        align-items: center;
+    }
+
+    .cs-request-header {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .cs-request-row {
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cs-request-row:last-child {
+        border-bottom: none;
+    }
+
+    /* Status badges */
+    .cs-status {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    .cs-status-accepted {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .cs-status-rejected {
+        background: #f8d7da;
+        color: #842029;
+    }
+
+    .cs-status-pending {
+        background: #fff3cd;
+        color: #664d03;
+    }
+
+    /* Links */
+    .cs-link {
+        color: #05dde9;
+        font-weight: 600;
+        text-decoration: none;
+        margin-right: 8px;
+    }
+
+    .cs-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="cs-request-wrapper">
+
+    <div class="cs-request-title">My Job Requests</div>
+
+    <div class="cs-request-table">
+
+        <div class="cs-request-header">
+            <div>#</div>
+            <div>Job Title</div>
+            <div>Details</div>
+            <div>File</div>
+            <div>Action</div>
+        </div>
+
         {% for i in apply %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.job.job_title}}</td>
-            <td>{{i.job.job_details}}</td>
-            <td><a href="{{i.apply_file.url }}">View File</a></td>
-            <td>{% if i.apply_status == 1 %}Accepted
-                {% elif i.apply_status == 2 %}Rejected
-                {% else %}Pending
+        <div class="cs-request-row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ i.job.job_title }}</div>
+            <div>{{ i.job.job_details }}</div>
+            <div>
+                <a href="{{ i.apply_file.url }}" class="cs-link" target="_blank">
+                    View File
+                </a>
+            </div>
+            <div>
+                {% if i.apply_status == 1 %}
+                    <span class="cs-status cs-status-accepted">Accepted</span>
+                {% elif i.apply_status == 2 %}
+                    <span class="cs-status cs-status-rejected">Rejected</span>
+                {% else %}
+                    <span class="cs-status cs-status-pending">Pending</span>
                 {% endif %}
-                |<a href="{% url 'User:chatpage' i.job.recruiter.id %}">Chat</a>
-            </td>
-        </tr>
+
+                | <a href="{% url 'User:chatpage' i.job.recruiter.id %}" class="cs-link">
+                    Chat
+                </a>
+            </div>
+        </div>
         {% endfor %}
-    </table>
-</body>
-</html>
+
+    </div>
+
+</div>
+
+{% endblock %}

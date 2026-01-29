@@ -1,45 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View More</title>
-</head>
-<body>
-   
-    <table align="center" border="1">
-        <tr>
-            <td>Title</td>
-            <td>{{job.job_title}}</td>
-        </tr>
-        <tr>
-            <td>Details</td>
-            <td>{{job.job_details}}</td>
-        </tr>
-        <tr>
-            <td>Experience</td>
-            <td>{{job.job_experience}}</td>
-        </tr>
-        <tr>
-            <td>Requirement</td>
-            <td>{{job.job_requirment}}</td>
-        </tr>
-        <tr>
-            <td>Job Type</td>
-            <td>{{job.jobtype.jobtype_name}}</td>
-        </tr>
-        <tr>
-            <td>Category</td>
-            <td>{{job.jobcategory.jobcategory_name}}</td>
-        </tr>
-        <tr>
-            <td>Last date</td>
-            <td>{{job.job_lastdate}}</td>
-        </tr>
-        <tr>
-            <td>Recruiter details</td>
-            <td>{{job.recruiter.recruiter_name}}</td>
-        </tr>
-    </table>
-</body>
-</html>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    .job-view-wrapper {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+        padding: 30px 35px;
+    }
+
+    .job-title-main {
+        font-size: 26px;
+        font-weight: 700;
+        color: #05dde9;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e8feff;
+        padding-bottom: 12px;
+    }
+
+    .job-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 30px;
+        margin-top: 20px;
+    }
+
+    .job-info-item {
+        background: #f9feff;
+        padding: 14px 18px;
+        border-radius: 14px;
+        border-left: 4px solid #05dde9;
+    }
+
+    .job-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #777;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+    }
+
+    .job-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4;
+    }
+
+    .job-details-box {
+        margin-top: 25px;
+        padding: 18px 22px;
+        background: #f0fdff;
+        border-radius: 16px;
+        border-left: 5px solid #05dde9;
+    }
+
+    .job-details-box h4 {
+        margin: 0 0 10px 0;
+        color: #05dde9;
+        font-size: 18px;
+    }
+
+    .job-details-box p {
+        margin: 0;
+        color: #444;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .job-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .job-view-wrapper {
+            margin: 20px;
+            padding: 25px;
+        }
+    }
+</style>
+
+<div class="job-view-wrapper">
+
+    <div class="job-title-main">
+        {{job.job_title}}
+    </div>
+
+    <div class="job-details-box">
+        <h4>Job Description</h4>
+        <p>{{job.job_details}}</p>
+    </div>
+
+    <div class="job-info-grid">
+
+        <div class="job-info-item">
+            <div class="job-label">Experience</div>
+            <div class="job-value">{{job.job_experience}}</div>
+        </div>
+
+        <div class="job-info-item">
+            <div class="job-label">Requirement</div>
+            <div class="job-value">{{job.job_requirment}}</div>
+        </div>
+
+        <div class="job-info-item">
+            <div class="job-label">Job Type</div>
+            <div class="job-value">{{job.jobtype.jobtype_name}}</div>
+        </div>
+
+        <div class="job-info-item">
+            <div class="job-label">Category</div>
+            <div class="job-value">{{job.jobcategory.jobcategory_name}}</div>
+        </div>
+
+        <div class="job-info-item">
+            <div class="job-label">Last Date</div>
+            <div class="job-value">{{job.job_lastdate}}</div>
+        </div>
+
+        <div class="job-info-item">
+            <div class="job-label">Recruiter</div>
+            <div class="job-value">{{job.recruiter.recruiter_name}}</div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

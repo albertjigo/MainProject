@@ -1,3 +1,4 @@
+
 <!-- User/ViewQuestion.html -->
 <!DOCTYPE html>
 <html>
@@ -170,9 +171,10 @@
             data: {
                 answers: JSON.stringify(answers), exambodyid: exambodyid,
             },
-            success: function (data) {
-                window.location = "{% url 'User:successer' %}";
-            },
+           success: function (data) {
+            window.location = "/User/viewresult/" + data.exambodyid +"/";
+            }
+
         });
     }
 
@@ -183,7 +185,8 @@
         var ur = "{% url 'User:ajaxtimer' %}"
         $.ajax({
             url: ur,
-            data: { exam: exam, },
+           data: { exambodyid: document.getElementById("exambodyid").value },
+
             success: function (data) {
                 if (data.status) {
                     const questionCards = document.querySelectorAll('.question-card');

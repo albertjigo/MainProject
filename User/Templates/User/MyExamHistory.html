@@ -1,0 +1,44 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Exam History</title>
+</head>
+<body>
+
+<h2>My Exam Attempts</h2>
+
+<table border="1" cellpadding="8" >
+    <tr>
+        <th>#</th>
+        <th>Exam</th>
+        <th>Type</th>
+        <th>Level</th>
+        <th>Score</th>
+        <th>Total Marks</th>
+        <th>Action</th>
+    </tr>
+
+    {% for a in attempts %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ a.examination.exam_name }}</td>
+        <td>{{ a.examination.examtype.examtype_name }}</td>
+        <td>{{ a.examination.level.level_name }}</td>
+        <td>{{ a.total_marks }}</td>
+        <td>{{ a.examination.level.level_duration }}</td>
+        <td>
+            <a href="{% url 'User:viewresult' a.id %}">View Result</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="7">No exams attended yet</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
+{% endblock %}

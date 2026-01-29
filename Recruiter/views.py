@@ -3,7 +3,7 @@ from Guest.models import *
 from Admin.models import *
 from Recruiter.models import*
 from User.models import*
-from datetime import datetime
+from datetime import datetime,date
 from django.db.models import Q,Max
 
 
@@ -71,7 +71,7 @@ def Job(request):
         recruiter = tbl_recruiter.objects.get(id=request.session['rid'])
         jobtype=tbl_jobtype.objects.all()
         jobcategory=tbl_jobcategory.objects.all()
-        jobdata=tbl_job.objects.all()
+        jobdata=tbl_job.objects.filter(recruiter=request.session['rid'])
     if request.method=="POST":
         title=request.POST.get('txt_title')
         details=request.POST.get('txt_details')

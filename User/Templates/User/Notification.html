@@ -1,28 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notification</title>
-</head>
-<body>
-    <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>TITLE</td>
-            <td>DETAILS</td>
-            <td>FILE</td>
-            <td>TO DATE</td>
-        </tr>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #eef7ff, #f9fbff);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .cs-noti-wrapper {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .cs-noti-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #05dde9;
+        margin-bottom: 20px;
+    }
+
+    /* Notification list */
+    .cs-noti-list {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    .cs-noti-header,
+    .cs-noti-row {
+        display: grid;
+        grid-template-columns: 70px 1.5fr 2fr 1fr 1fr;
+        padding: 14px 18px;
+        align-items: center;
+    }
+
+    .cs-noti-header {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .cs-noti-row {
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cs-noti-row:last-child {
+        border-bottom: none;
+    }
+
+    .cs-noti-link {
+        color: #05dde9;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .cs-noti-link:hover {
+        text-decoration: underline;
+    }
+
+    .cs-noti-date {
+        font-weight: 600;
+        color: #333;
+    }
+</style>
+
+<div class="cs-noti-wrapper">
+
+    <div class="cs-noti-title">Notifications</div>
+
+    <div class="cs-noti-list">
+
+        <div class="cs-noti-header">
+            <div>#</div>
+            <div>Title</div>
+            <div>Details</div>
+            <div>File</div>
+            <div>To Date</div>
+        </div>
+
         {% for i in noti %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.notification_title}}</td>
-            <td>{{i.notification_details}}</td>
-            <td><a href="{{i.notification_file.url}}">View file</a></td>
-            <td>{{i.notification_todate}}</td>
-        </tr>
+        <div class="cs-noti-row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ i.notification_title }}</div>
+            <div>{{ i.notification_details }}</div>
+            <div>
+                <a href="{{ i.notification_file.url }}" class="cs-noti-link" target="_blank">
+                    View File
+                </a>
+            </div>
+            <div class="cs-noti-date">
+                {{ i.notification_todate }}
+            </div>
+        </div>
         {% endfor %}
-    </table>
-</body>
-</html>
+
+    </div>
+
+</div>
+
+{% endblock %}

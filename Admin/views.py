@@ -12,7 +12,10 @@ def Homepage(request):
         return redirect("Guest:Login")
     else:
         Admin = tbl_adminreg.objects.get(id=request.session['aid'])
-        return render(request,"Admin/HomePage.html",{'Admin':Admin})
+        user=tbl_userreg.objects.count()
+        recruiter=tbl_recruiter.objects.count()
+
+        return render(request,"Admin/HomePage.html",{'Admin':Admin,'user':user,'recruiter':recruiter})
 
 def Adminregistration(request):
     data=tbl_adminreg.objects.all()
@@ -339,7 +342,7 @@ def delq(request,qid,id):
     tbl_question.objects.get(id=qid).delete()
     return redirect("Admin:Question",id)
 def Addoption(request,id):
-    opt=tbl_option.objects.all()
+    opt=tbl_option.objects.filter(question=id)
     question=tbl_question.objects.get(id=id)
     if request.method=="POST":
         option=request.POST.get('txt_option')
@@ -382,3 +385,6 @@ def Notification(request):
 def deln(request,id):
     tbl_notification.objects.get(id=id).delete()
     return redirect("Admin:Notification")
+def Viewfeedback(request):
+    feed=tbl_feedback.objects.all()
+    return render(request,"Admin/Viewfeedback.html",{"feed":feed})

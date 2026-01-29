@@ -41,9 +41,9 @@ class tbl_examinationanswers(models.Model):
     examinationanswers_statusq = models.IntegerField(default=0)
 
 class tbl_timmer(models.Model):
-    timmer = models.TimeField()
-    exam = models.ForeignKey(tbl_exam, on_delete=models.CASCADE)
-    timmer_status = models.IntegerField(default=0)
+    examinationbody = models.ForeignKey(tbl_examinationbody, on_delete=models.CASCADE)
+    timmer = models.IntegerField() 
+
 class tbl_chat(models.Model):
     chat_content = models.CharField(max_length=500)
     chat_time = models.DateTimeField()
@@ -55,4 +55,4 @@ class tbl_chat(models.Model):
 class tbl_feedback(models.Model):
     feedback_date=models.DateField(auto_now_add=True)
     feedback_content=models.CharField(max_length=50)
-    user=models.ForeignKey(tbl_job,on_delete=models.CASCADE)
+    user=models.ForeignKey(tbl_userreg,on_delete=models.CASCADE)

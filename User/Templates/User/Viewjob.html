@@ -1,53 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'User/Header.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Job</title>
-</head>
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+    }
 
-<body>
-    <table border="1" align="center">
-        <tr>
-            <td>Job type: <select name="set_job" id="sel_job" >
-                    <option value="">---select---</option>
+    .job-page {
+        padding: 30px;
+    }
 
-                    {% for i in jobtype %}
-                    <option>{{i.jobtype_name}}
-                    </option>
+    /* FILTER CARD */
+    .job-filter {
+        max-width: 900px;
+        margin: auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .job-filter label {
+        font-weight: 600;
+        color: #333;
+        margin-right: 8px;
+    }
+
+    .job-filter select {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        min-width: 180px;
+        outline: none;
+        transition: 0.3s ease;
+    }
+
+    .job-filter select:focus {
+        border-color: #05dde9;
+        box-shadow: 0 0 0 3px rgba(5, 221, 233, 0.2);
+    }
+
+    /* TABLE CARD */
+    .job-table-wrapper {
+        max-width: 1100px;
+        margin: 35px auto;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    .job-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .job-table thead {
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+    }
+
+    .job-table th {
+        padding: 14px;
+        color: #ffffff;
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .job-table td {
+        padding: 14px;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #eef2f3;
+        vertical-align: top;
+    }
+
+    .job-table tbody tr:hover {
+        background: #f0fdff;
+        transition: 0.2s ease;
+    }
+
+    .job-date {
+        font-weight: 600;
+        color: #05dde9;
+    }
+
+    /* ACTION BUTTONS */
+    .job-actions a {
+        text-decoration: none;
+        padding: 7px 14px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-right: 6px;
+        display: inline-block;
+        transition: 0.3s ease;
+    }
+
+    .btn-view {
+        background: #e8feff;
+        color: #05dde9;
+        border: 1px solid #05dde9;
+    }
+
+    .btn-view:hover {
+        background: #05dde9;
+        color: #fff;
+    }
+
+    .btn-apply {
+        background: #05dde9;
+        color: #fff;
+    }
+
+    .btn-apply:hover {
+        background: #03c7d3;
+        box-shadow: 0 8px 18px rgba(5, 221, 233, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .job-filter {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .job-filter select {
+            width: 100%;
+        }
+
+        .job-table th,
+        .job-table td {
+            font-size: 13px;
+            padding: 10px;
+        }
+    }
+</style>
+
+<div class="job-page">
+
+    <!-- FILTER SECTION -->
+    <div class="job-filter">
+        <div>
+            <label>Job Type</label>
+            <select name="sel_job" id="sel_job">
+                <option value="">--- Select ---</option>
+                {% for i in jobtype %}
+                <option value="{{i.id}}">{{i.jobtype_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>Category</label>
+            <select name="sel_category" id="sel_category">
+                <option value="">--- Select ---</option>
+                {% for i in jobcat %}
+                <option value="{{i.id}}">{{i.jobcategory_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- JOB LIST -->
+    <div id="main">
+        <div class="job-table-wrapper">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Details</th>
+                        <th>Last Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in job %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><strong>{{i.job_title}}</strong></td>
+                        <td>{{i.job_details}}</td>
+                        <td class="job-date">{{i.job_lastdate}}</td>
+                        <td class="job-actions">
+                            <a href="{% url 'User:Viewmore' i.id %}" class="btn-view">View</a>
+                            <a href="{% url 'User:Upload' i.id %}" class="btn-apply">Apply</a>
+                        </td>
+                    </tr>
                     {% endfor %}
-                </select></td>
-            <td>Category: <select name="sel_category" id="sel_category" >
-                    <option>---select---</option>
-                    {% for i in jobcat %}
-                    <option>{{i.jobcategory_name}}
-                    </option>
-                    {% endfor %}
-                </select></td>
-        </tr>
-    </table>
-    <table border="1" align="center">
-        <tr>
-            <td>SI NO</td>
-            <td>Title</td>
-            <td>Details</td>
-            <td>To Date</td>
-            <td>Action</td>
-        </tr>
-        {% for i in job %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.job_title}}</td>
-            <td>{{i.job_details}}</td>
-            <td>{{i.job_lastdate}}</td>
-            <td>
-                <a href="{% url 'User:Viewmore' i.id %}">View More</a>|
-                <a href="{% url 'User:Upload' i.id %}">Apply</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-</html>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    function loadJobs() {
+        var jt = $("#sel_job").val();
+        var jc = $("#sel_category").val();
+        var ur = "{% url 'User:Ajaxsearchjob' %}";
+
+        $.ajax({
+            url: ur,
+            data: { jt: jt, jc: jc },
+            success: function (data) {
+                $("#main").html(data);
+            }
+        });
+    }
+
+    $("#sel_job").change(loadJobs);
+    $("#sel_category").change(loadJobs);
+</script>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+ <div id="main">
+        <div class="job-table-wrapper">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Details</th>
+                        <th>Last Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in job %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><strong>{{i.job_title}}</strong></td>
+                        <td>{{i.job_details}}</td>
+                        <td class="job-date">{{i.job_lastdate}}</td>
+                        <td class="job-actions">
+                            <a href="{% url 'User:Viewmore' i.id %}" class="btn-view">View</a>
+                            <a href="{% url 'User:Upload' i.id %}" class="btn-apply">Apply</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

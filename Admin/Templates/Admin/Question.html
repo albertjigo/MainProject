@@ -1,3 +1,5 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,3 +54,4 @@
     window.location = "{% url 'Admin:Question'  id %}";
 </script>
 {% endif %}
+    {% endblock %}

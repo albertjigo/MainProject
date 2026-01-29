@@ -1,40 +1,162 @@
+{% extends 'Recruiter/Header.html' %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Request</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .request-card {
+            max-width: 1000px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #05dde9;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #05dde9;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        a {
+            color: #05dde9;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #028f99;
+        }
+
+        .action-links a {
+            margin: 0 5px;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 15px;
+            }
+
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+            }
+
+            td:before {
+                position: absolute;
+                top: 12px;
+                left: 15px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: #333;
+            }
+
+            td:nth-of-type(1):before { content: "SI NO"; }
+            td:nth-of-type(2):before { content: "User Details"; }
+            td:nth-of-type(3):before { content: "Job Title"; }
+            td:nth-of-type(4):before { content: "Details"; }
+            td:nth-of-type(5):before { content: "File"; }
+            td:nth-of-type(6):before { content: "Action"; }
+        }
+    </style>
 </head>
 <body>
-    <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>User Details</td>
-            <td>Job Title</td>
-            <td>Details</td>
-            <td>File</td>
-            <td>Action</td>
-        </tr>
-        {% for i in apply %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user.user_name}} <br>
-                {{i.user.user_email}} <br>
-                {{i.user.user_contact}} <br>
-                {{i.user.user_address}}</td>
-            <td>{{i.job.job_title}}</td>
-            <td>{{i.job.job_details}}</td>
-            <td><a href="{{i.apply_file.url }}">View File</a></td>
-            <td><a href="{% url 'Recruiter:acceptu' i.id %}">Accept</a>|<a href="{% url 'Recruiter:rejectu' i.id %}">Reject</a><br>
-            <a href="{% url 'Recruiter:chatpage' i.user.id %}">Chat</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="request-card">
+        <h2>My Requests</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>SI NO</th>
+                    <th>User Details</th>
+                    <th>Job Title</th>
+                    <th>Details</th>
+                    <th>File</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i in apply %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.user.user_name }} <br>
+                        {{ i.user.user_email }} <br>
+                        {{ i.user.user_contact }} <br>
+                        {{ i.user.user_address }}
+                    </td>
+                    <td>{{ i.job.job_title }}</td>
+                    <td>{{ i.job.job_details }}</td>
+                    <td><a href="{{ i.apply_file.url }}" target="_blank">View File</a></td>
+                    <td class="action-links">
+                        <a href="{% url 'Recruiter:acceptu' i.id %}">Accept</a>|
+                        <a href="{% url 'Recruiter:rejectu' i.id %}">Reject</a><br>
+                        <a href="{% url 'Recruiter:chatpage' i.user.id %}">Chat</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+
 {% if msg %}
 <script>
-    alert("{{msg}}");
+    alert("{{ msg }}");
     window.location = "{% url 'Recruiter:Viewrequest' %}";
 </script>
 {% endif %}
+
+{% endblock %}

@@ -1,3 +1,5 @@
+{% extends 'User/Header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,47 +7,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complaint</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #eef7ff, #f9fbff);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Page wrapper */
+        .cs-complaint-wrapper {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Form card */
+        .cs-complaint-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .cs-complaint-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #05dde9;
+        }
+
+        /* Input group */
+        .cs-complaint-group {
+            margin-bottom: 18px;
+        }
+
+        .cs-complaint-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .cs-complaint-group input,
+        .cs-complaint-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .cs-complaint-group input:focus,
+        .cs-complaint-group textarea:focus {
+            outline: none;
+            border-color: #05dde9;
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+        }
+
+        /* Button */
+        .cs-complaint-btn {
+            padding: 12px 30px;
+            border-radius: 12px;
+            border: none;
+            background: #05dde9;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cs-complaint-btn:hover {
+            background: #05dde9;
+            transform: translateY(-1px);
+        }
+
+        /* Complaint list */
+        .cs-complaint-list {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        .cs-complaint-header,
+        .cs-complaint-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 2fr 120px 1fr;
+            padding: 14px 18px;
+            align-items: center;
+        }
+
+        .cs-complaint-header {
+            background: #05dde9;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .cs-complaint-row {
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .cs-complaint-row:last-child {
+            border-bottom: none;
+        }
+
+        .cs-reply-pending {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .cs-reply-done {
+            color: #198754;
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table border="2" align="center">
-            <tr>
-                <td>Title</td>
-                <td><input type="text" name="txt_title" id="txt_title" required></td>
-            </tr>
-            <tr>
-                <td>Description</td>
-                <td><input type="text" name="txt_desc" id="txt_desc" required></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    <table border="2" align="center">
-        <tr>
-            <td>SI NO</td>
-            <td>TITLE</td>
-            <td>DESCRIPTION</td>
-            <td>DATE</td>
-            <td>REPLY</td>
-        </tr>
-        {% for i in Complaint %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.complaint_title}}</td>
-            <td>{{i.complaint_desc}}</td>
-            <td>{{i.complaint_date}}</td>
-            <td>
-                {% if i.complaint_status == 1 %}{{i.complaint_reply}}
-                {% elif i.complaint_status == 0 %}NOT REPLIED
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
 
+<div class="cs-complaint-wrapper">
+
+    <!-- Complaint Form -->
+    <form method="post" class="cs-complaint-card">
+        {% csrf_token %}
+
+        <div class="cs-complaint-title">Submit Complaint</div>
+
+        <div class="cs-complaint-group">
+            <label>Title</label>
+            <input type="text" name="txt_title" required>
+        </div>
+
+        <div class="cs-complaint-group">
+            <label>Description</label>
+            <textarea name="txt_desc" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="cs-complaint-btn">
+            Submit Complaint
+        </button>
+    </form>
+
+    <!-- Complaint List -->
+    <div class="cs-complaint-list">
+
+        <div class="cs-complaint-header">
+            <div>#</div>
+            <div>Title</div>
+            <div>Description</div>
+            <div>Date</div>
+            <div>Reply</div>
+        </div>
+
+        {% for i in Complaint %}
+        <div class="cs-complaint-row">
+            <div>{{ forloop.counter }}</div>
+            <div>{{ i.complaint_title }}</div>
+            <div>{{ i.complaint_desc }}</div>
+            <div>{{ i.complaint_date }}</div>
+            <div>
+                {% if i.complaint_status == 1 %}
+                    <span class="cs-reply-done">{{ i.complaint_reply }}</span>
+                {% else %}
+                    <span class="cs-reply-pending">Not Replied</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
 </html>
+{% endblock %}

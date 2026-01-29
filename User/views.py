@@ -81,7 +81,7 @@ def Viewjob(request):
     if "uid" not in request.session:
         return redirect("Guest:Login")
     else:
-        jobdata=tbl_job.objects.all()
+        jobdata=tbl_job.objects.filter(job_lastdate__gt=datetime.today())
         jobcategory=tbl_jobcategory.objects.all()
         jobtype=tbl_jobtype.objects.all()
         return render(request,'User/Viewjob.html',{'job':jobdata,'jobtype':jobtype,'jobcat':jobcategory})
@@ -165,70 +165,162 @@ def viewexam(request):
             i.examstatus = 1
     return render(request,"User/ViewExam.html",{'exam':exam})
 
-def viewquestion(request,id):
-    question = tbl_question.objects.filter(exam=id)
+def viewquestion(request, id):
+    user = tbl_userreg.objects.get(id=request.session["uid"])
+    exam = tbl_exam.objects.get(id=id)
+
+    old_bodies = tbl_examinationbody.objects.filter(
+        user=user,
+        examination=exam
+    )
+
+    tbl_timmer.objects.filter(examinationbody__in=old_bodies).delete()
+
+    exambody = tbl_examinationbody.objects.create(
+        user=user,
+        examination=exam,
+        examinationbody_status=0
+    )
+
+    questions = tbl_question.objects.filter(exam=exam)
+
     optioncount = 0
-    for i in question:
-        count = tbl_option.objects.filter(question=i.id).count()
-        if count > 0:
-            optioncount = optioncount + 1
-    examcount = tbl_examinationbody.objects.filter(examination=id,user=request.session["uid"]).count()
-    if examcount > 0:
-        exambodyid = tbl_examinationbody.objects.get(examination=id,user=request.session["uid"])
-        return render(request,"User/ViewQuestion.html",{'questions':question,"exambodyid":exambodyid.id,"optioncount":optioncount,"examination_id":id})
-    else:
-        exambodyid = tbl_examinationbody.objects.create(user=tbl_userreg.objects.get(id=request.session["uid"]),examination=tbl_exam.objects.get(id=id))
-        return render(request,"User/ViewQuestion.html",{'questions':question,"exambodyid":exambodyid.id,"optioncount":optioncount,"examination_id":id})
+    for q in questions:
+        if tbl_option.objects.filter(question=q).exists():
+            optioncount += 1
+
+    return render(request, "User/ViewQuestion.html", {
+        "questions": questions,
+        "exambodyid": exambody.id,
+        "optioncount": optioncount,
+        "examination_id": exam.id
+    })
 
 def ajaxexamanswer(request):
     exam_answer = request.GET.get('answers')
+    exambodyid = request.GET.get('exambodyid')
     answers_dict = json.loads(exam_answer)
+
+    exambody = tbl_examinationbody.objects.get(id=exambodyid)
+
     for question_key, option_id in answers_dict.items():
         questionid = question_key.split("_")[1]
-        options = tbl_option.objects.get(question=questionid,option_status=1)
-        if option_id == None:
-            tbl_examinationanswers.objects.create(examinationbody=tbl_examinationbody.objects.get(id=request.GET.get('exambodyid')),question=tbl_question.objects.get(id=questionid),correct_answer=tbl_option.objects.get(id=options.id))
-        else:
-            tbl_examinationanswers.objects.create(examinationbody=tbl_examinationbody.objects.get(id=request.GET.get('exambodyid')),question=tbl_question.objects.get(id=questionid),myanswer=tbl_option.objects.get(id=option_id),correct_answer=tbl_option.objects.get(id=options.id))
-    exambody = tbl_examinationbody.objects.get(id=request.GET.get('exambodyid'))
+        correct_option = tbl_option.objects.get(
+            question=questionid,
+            option_status=1
+        )
+
+        tbl_examinationanswers.objects.create(
+            examinationbody=exambody,
+            question=tbl_question.objects.get(id=questionid),
+            myanswer=tbl_option.objects.get(id=option_id) if option_id else None,
+            correct_answer=correct_option
+        )
+
     exambody.examinationbody_status = 1
     exambody.save()
-    return JsonResponse({"msg":"Examination Submitted Sucessfully..."})
+
+    return JsonResponse({
+        "msg": "Examination Submitted Successfully",
+        "exambodyid": exambodyid
+    })
 
 def ajaxtimer(request):
-    exam = tbl_exam.objects.get(id=request.GET.get('exam'))
+    exambodyid = request.GET.get('exambodyid')
+    exambody = tbl_examinationbody.objects.get(id=exambodyid)
+    exam = exambody.examination
 
-    timecount = tbl_timmer.objects.filter(exam=exam).count()
+    timer_count = tbl_timmer.objects.filter(examinationbody=exambody).count()
 
-    if timecount > 0:
-        timer_obj = tbl_timmer.objects.get(exam=exam)
+    if timer_count > 0:
+        timer = tbl_timmer.objects.get(examinationbody=exambody)
 
-        if timer_obj.timmer > time(0, 0, 0):
-            current_datetime = datetime.combine(datetime.today(), timer_obj.timmer)
-            new_datetime = current_datetime - timedelta(seconds=1)
-            new_time = new_datetime.time()
+        if timer.timmer > 0:
+            timer.timmer -= 1
+            timer.save()
 
-            timer_obj.timmer = new_time
-            timer_obj.save()
+            minutes = timer.timmer // 60
+            seconds = timer.timmer % 60
 
-            time_str = new_time.strftime("%H:%M:%S")
-            return JsonResponse({"msg": time_str, "status": False})
+            return JsonResponse({
+                "msg": f"{minutes:02d}:{seconds:02d}",
+                "status": False
+            })
         else:
-            exam.examination_status = 2
-            exam.save()
-            return JsonResponse({"msg": "Time's up", "status": True})
+            exambody.examinationbody_status = 1
+            exambody.save()
+
+            return JsonResponse({
+                "msg": "Time's up",
+                "status": True
+            })
+
     else:
-        minutes = exam.level.level_duration  # minutes (int)
-        hours = minutes // 60
-        mins = minutes % 60
+        total_seconds = exam.level.level_duration * 60
 
-        start_time = time(hours, mins, 0)
-        tbl_timmer.objects.create(exam=exam, timmer=start_time)
+        tbl_timmer.objects.create(
+            examinationbody=exambody,
+            timmer=total_seconds
+        )
 
-        return JsonResponse({"msg": ""})
+        minutes = total_seconds // 60
+        seconds = total_seconds % 60
+
+        return JsonResponse({
+            "msg": f"{minutes:02d}:{seconds:02d}",
+            "status": False
+        })
+
+
 
 def successer(request):
     return render(request,"User/Success.html")
+
+def viewresult(request, exambodyid):
+    exambody = tbl_examinationbody.objects.get(
+        id=exambodyid,
+        user=request.session["uid"]
+    )
+
+    answers = tbl_examinationanswers.objects.filter(
+        examinationbody=exambody
+    )
+
+    total_questions = answers.count()
+
+    score = 0
+    for a in answers:
+        if a.myanswer and a.myanswer.id == a.correct_answer.id:
+            score += 1
+
+    if exambody.total_marks != score:
+        exambody.total_marks = score
+        exambody.save() 
+
+    return render(request, "User/ViewResult.html", {
+        "answers": answers,
+        "score": score,                
+        "total_questions": total_questions,
+        "total": total_questions,       
+    })
+
+
+def my_exam_history(request):
+    user = tbl_userreg.objects.get(id=request.session["uid"])
+
+    attempts = (
+        tbl_examinationbody.objects
+        .filter(user=user, examinationbody_status=1)
+        .select_related("examination", "examination__examtype", "examination__level")
+        .order_by("-id")
+    )
+
+    return render(request, "User/MyExamHistory.html", {
+        "attempts": attempts
+    })
+
+
+
 def chatpage(request,id):
     recruiter  = tbl_recruiter.objects.get(id=id)
     return render(request,"User/Chat.html",{"recruiter":recruiter})
@@ -252,4 +344,29 @@ def clearchat(request):
 def Notification(request):
     noti=tbl_notification.objects.all()
     return render(request,"User/Notification.html",{"noti":noti})
+def Feedback(request):
+    feed=tbl_feedback.objects.filter(user=request.session["uid"])
+    us = tbl_userreg.objects.get(id=request.session["uid"])
+    if request.method=="POST":
+        feedback=request.POST.get('txt_content')
+        tbl_feedback.objects.create(feedback_content=feedback,user=us)
+        return render(request,"User/Feedback.html",{'msg':'Feedback Added'})
+    else:
+        return render(request,"User/Feedback.html",{"feed":feed})
 
+def fdel(request,id):
+    tbl_feedback.objects.get(id=id).delete()
+    return redirect("User:Feedback")
+def Ajaxsearchjob(request):
+    jc = request.GET.get("jc")
+    jt = request.GET.get("jt")
+
+    job = tbl_job.objects.filter(job_lastdate__gt=datetime.today())
+
+    if jt:
+        job = job.filter(jobtype_id=jt)
+
+    if jc:
+        job = job.filter(jobcategory_id=jc)
+
+    return render(request, "User/Ajaxsearchjob.html", {'job': job})

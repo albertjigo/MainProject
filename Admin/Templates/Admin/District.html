@@ -1,3 +1,5 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,3 +47,4 @@
         window.location="{% url 'Admin:District' %}";
     </script>
 {% endif %}
+    {% endblock %}

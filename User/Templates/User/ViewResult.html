@@ -1,0 +1,124 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Result</title>
+
+    <style>
+        .card-container {
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .question-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-card.no-answer {
+            background-color: #ffe6e6;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .option {
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+
+        .true-option {
+            background-color: #e6ffe6;
+            border-color: #b3ffb3;
+            color: #006600;
+            font-weight: bold;
+        }
+
+        .wrong-option {
+            background-color: #ffe6e6;
+            border-color: #ffb3b3;
+            color: #660000;
+            font-weight: bold;
+        }
+
+        .exam-title {
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .exam-title span {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card-container">
+
+    {% if answers %}
+    <div class="exam-title">
+        <div><span>Exam:</span> {{ answers.0.examinationbody.examination.exam_name }}</div>
+        <div><span>Scored Marks:</span> {{ score}}</div>
+        <div><span>Total Questions:</span> {{ total_questions }}</div>
+        <div><span>Total Marks:</span> {{ total }}</div>
+    </div>
+    {% endif %}
+
+    {% for r in answers %}
+    <div class="question-card {% if not r.myanswer %}no-answer{% endif %}">
+
+        <div class="question-text">
+            {{ forloop.counter }}. {{ r.question.question_question }}
+        </div>
+
+        {% for option in r.question.tbl_option_set.all %}
+
+            {% if option.option_status == 1 %}
+                <!-- Correct Answer -->
+                <div class="option true-option">
+                    {{ option.option_option }}
+                </div>
+
+            {% elif r.myanswer and option.id == r.myanswer.id %}
+                <!-- Wrong Selected Answer -->
+                <div class="option wrong-option">
+                    {{ option.option_option }}
+                </div>
+
+            {% else %}
+                <div class="option">
+                    {{ option.option_option }}
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    {% empty %}
+        <p>No result available.</p>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
+{% endblock %}

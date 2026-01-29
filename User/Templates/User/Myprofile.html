@@ -1,49 +1,130 @@
+
+{% extends 'User/Header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+                /* Page wrapper to avoid overlap */
+        .careersync-profile-page {
+            min-height: calc(100vh - 160px); /* navbar + footer space */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 40px;
+            background: linear-gradient(135deg, #a3d4ea, #648090);
+        }
+
+        /* Profile card */
+        .careersync-profile-card {
+            width: 420px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Header */
+        .careersync-profile-header {
+            background: linear-gradient(135deg, #05dde9, #38bdf8);
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Image */
+        .careersync-profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+        }
+
+        /* Name */
+        .careersync-profile-name {
+            margin-top: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Content */
+        .careersync-profile-content {
+            padding: 25px;
+        }
+
+        .careersync-profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Buttons */
+        .careersync-profile-actions {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+    </style>
 </head>
 
-<body>
-    <form action="" method="post">
-        
-        <table border="2" align="center">
-            <tr>
-                <td colspan="2" align="center"><img src="{{user.user_photo.url}}" width="150" alt=""></td>
+<body class="careersync-profile-body">
 
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td>{{user.user_name}}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>{{user.user_email}}</td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td>{{user.user_contact}}</td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td>{{user.user_address}}</td>
-            </tr>
-            <tr>
-                <td>District</td>
-                <td>{{user.place.district.district_name}}</td>
-            </tr>
-            <tr>
-                <td>Place</td>
-                <td>{{user.place.place_name}}</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><a href="{% url 'User:Editprofile' %}">Edit Profile</a>|<a href="{% url 'User:Changepassword' %}">Change Password</a></td>
-            </tr>
-        </table>
-    </form>
+    <div class="careersync-profile-card">
+
+        <div class="careersync-profile-header">
+            <img src="{{ user.user_photo.url }}" class="careersync-profile-photo" alt="Profile Photo">
+            <div class="careersync-profile-name">{{ user.user_name }}</div>
+        </div>
+
+        <div class="careersync-profile-content">
+            <div class="careersync-profile-row">
+                <span class="careersync-profile-label">Email</span>
+                <span class="careersync-profile-value">{{ user.user_email }}</span>
+            </div>
+
+            <div class="careersync-profile-row">
+                <span class="careersync-profile-label">Contact</span>
+                <span class="careersync-profile-value">{{ user.user_contact }}</span>
+            </div>
+
+            <div class="careersync-profile-row">
+                <span class="careersync-profile-label">Address</span>
+                <span class="careersync-profile-value">{{ user.user_address }}</span>
+            </div>
+
+            <div class="careersync-profile-row">
+                <span class="careersync-profile-label">District</span>
+                <span class="careersync-profile-value">{{ user.place.district.district_name }}</span>
+            </div>
+
+            <div class="careersync-profile-row">
+                <span class="careersync-profile-label">Place</span>
+                <span class="careersync-profile-value">{{ user.place.place_name }}</span>
+            </div>
+        </div>
+
+        <div class="careersync-profile-actions">
+            <a href="{% url 'User:Editprofile' %}" class="careersync-btn careersync-btn-edit">
+                Edit Profile
+            </a>
+            <a href="{% url 'User:Changepassword' %}" class="careersync-btn careersync-btn-password">
+                Change Password
+            </a>
+        </div>
+
+    </div>
+
 </body>
-
 </html>
+
+
+{% endblock %}
