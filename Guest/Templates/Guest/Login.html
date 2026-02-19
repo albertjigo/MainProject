@@ -1,39 +1,120 @@
 {% extends 'Guest/Header.html' %}
 {% block content %}
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        /* Unique container for login form */
+        .login-form-container {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            min-height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Form styles */
+        .login-form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            color: #30c5f2;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* Table layout */
+        .login-form table {
+            width: 100%;
+        }
+
+        .login-form td {
+            padding: 10px 0;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .login-form input[type="email"]:focus,
+        .login-form input[type="password"]:focus {
+            border-color: #30c5f2;
+            outline: none;
+        }
+
+        .login-form input[type="submit"] {
+            background-color: #30c5f2;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #28a3d9;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 480px) {
+            .login-form {
+                padding: 30px 20px;
+            }
+
+            .login-form h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table align="center" border="2">
-            <tr>
-                <td>Email</td>
-                <td><input type="email" name="txt_email" id="txt_email" required></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" name="txt_pass" id="txt_pass" required></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-</body>
+    <div class="login-form-container">
+        <form class="login-form" action="" method="post">
+            {% csrf_token %}
+            <h2>Login</h2>
+            <table>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="email" name="txt_email" id="txt_email" required></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" name="txt_pass" id="txt_pass" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Submit"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 
-</html>
-{% if msg %}
+    {% if msg %}
     <script>
-        alert("{{msg}}");
-        window.location="{% url 'Guest:Login' %}";
+        alert("{{ msg }}");
+        window.location = "{% url 'Guest:Login' %}";
     </script>
-{% endif %}
+    {% endif %}
+</body>
+</html>
 {% endblock %}

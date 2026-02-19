@@ -1,73 +1,210 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes</title>
-</head>
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", sans-serif;
+    }
 
-<body>
-    <form action="" method="post" enctype="multipart/form-data">
-       {% csrf_token %}
-        <table align="center" border="1">
-            <tr>
-                <td>Title</td>
-                <td><input type="text" name="txt_title" id="txt_title" required></td>
-            </tr>
-            <tr>
-                <td>Details</td>
-                <td><input type="text" name="txt_details" id="txt_details" required></td>
-            </tr>
-            <tr>
-                <td>File</td>
-                <td><input type="file" name="file_note" id="file_note" required></td>
-            </tr>
-            <tr>
-                <td>Exam Type</td>
-                <td><select name="sel_et" id="sel_et" required>
-                    <option value="">---SELECT---</option>
+    .notes-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* ---------- CARD ---------- */
+    .card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        margin-bottom: 40px;
+    }
+
+    .card-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #05dde9;
+        margin-bottom: 25px;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid #dfeff2;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #05dde9;
+        box-shadow: 0 0 0 3px rgba(5, 221, 233, 0.2);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+        color: #ffffff;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(5, 221, 233, 0.45);
+    }
+
+    /* ---------- TABLE ---------- */
+    .notes-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .notes-table th,
+    .notes-table td {
+        padding: 14px 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .notes-table th {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .notes-table tr:nth-child(even) {
+        background: #f6feff;
+    }
+
+    .file-link {
+        color: #05dde9;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .file-link:hover {
+        text-decoration: underline;
+    }
+
+    .delete-btn {
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: #ff4d4d;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .delete-btn:hover {
+        background: #e63b3b;
+    }
+</style>
+
+<div class="notes-container">
+
+    <!-- ADD NOTES -->
+    <div class="card">
+        <div class="card-title">Add Notes</div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="txt_title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Details</label>
+                <input type="text" name="txt_details" required>
+            </div>
+
+            <div class="form-group">
+                <label>File</label>
+                <input type="file" name="file_note" required>
+            </div>
+
+            <div class="form-group">
+                <label>Exam Type</label>
+                <select name="sel_et" required>
+                    <option value="">--- Select ---</option>
                     {% for i in examtype %}
-                    <option value="{{i.id}}">
-                        {{i.examtype_name}}
-                    </option>
+                    <option value="{{i.id}}">{{i.examtype_name}}</option>
                     {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    <table align="center" border="1">
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn">Upload Notes</button>
+        </form>
+    </div>
+
+    <!-- NOTES LIST -->
+    <table class="notes-table">
         <tr>
-            <td>SI NO</td>
-            <td>Title</td>
-            <td>Details</td>
-            <td>File</td>
-            <td>Exam type</td>
-            <td>Action</td>
+            <th>SI NO</th>
+            <th>Title</th>
+            <th>Details</th>
+            <th>File</th>
+            <th>Exam Type</th>
+            <th>Action</th>
         </tr>
         {% for i in notes %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.notes_title}}</td>
             <td>{{i.notes_details}}</td>
-            <td> <a href="{{i.notes_file.url }}">View File</a></td>
+            <td>
+                <a href="{{i.notes_file.url}}" class="file-link" target="_blank">
+                    View File
+                </a>
+            </td>
             <td>{{i.examtype.examtype_name}}</td>
-            <td><a href="{% url 'Admin:notedel' i.id %}">Delete</a></td>
+            <td>
+                <a href="{% url 'Admin:notedel' i.id %}" class="delete-btn">
+                    Delete
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
-</body>
 
-</html>
+</div>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
     window.location = "{% url 'Admin:Notes' %}";
 </script>
 {% endif %}
-    {% endblock %}
+
+{% endblock %}

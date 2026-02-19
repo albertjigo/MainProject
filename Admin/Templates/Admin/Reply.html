@@ -1,31 +1,96 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reply</title>
-</head>
-<body>
-    <form action="" method="post"> 
+
+<style>
+    body {
+        background: #f3f6fb;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .reply-container {
+        max-width: 500px;
+        margin: 80px auto;
+        background: #ffffff;
+        padding: 35px 40px;
+        border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    }
+
+    .reply-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #34495e;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #ccd6dd;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52,152,219,0.15);
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: #3498db;
+        color: #ffffff;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        background: #2980b9;
+        transform: translateY(-1px);
+    }
+</style>
+
+<div class="reply-container">
+
+    <div class="reply-title">Reply to Complaint</div>
+
+    <form action="" method="post">
         {% csrf_token %}
-        <table>
-            <tr>
-                <td>REPLY</td>
-                <td><input type="text" name="txt_reply" id="txt_reply"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="SUBMIT"></td>
-            </tr>
-        </table>
+
+        <div class="form-group">
+            <label for="txt_reply">Reply</label>
+            <input type="text" name="txt_reply" id="txt_reply" placeholder="Enter your reply..." required>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Reply</button>
     </form>
-</body>
-</html>
+
+</div>
+
 {% if msg %}
-    <script>
-        alert("{{msg}}");
-        window.location="{% url 'Admin:Viewcomplaint' %}";
-    </script>
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:Viewcomplaint' %}";
+</script>
 {% endif %}
-    {% endblock %}
+
+{% endblock %}

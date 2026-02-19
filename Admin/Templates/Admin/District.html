@@ -1,50 +1,182 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>District</title>
-</head>
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", sans-serif;
+    }
 
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table border="2" align="center">
-            <tr>
-                <td>District</td>
-                <td><input type="text" name="txt_district" id="txt_district" value="{{editdata.district_name}}" required></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+    .district-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
 
-            </tr>
-        </table>
-    </form>
-   <table border="2" align="center">
-    <tr>
-        <td>SI NO</td>
-        <td>District</td>
-        <td>Action</td>
-    </tr>
-    {% for i in dis %}
-    <tr>
-        <td>{{ forloop.counter}}</td>
-        <td>{{i.district_name}}</td>
-        <td><a href="{% url 'Admin:deldistrict' i.id %}">DELETE</a>/<a href="{% url 'Admin:editdistrict' i.id %}">Edit</a></td>
-    </tr>
-    {% endfor %}
-   </table>
-    
-</body>
+    /* ---------- CARD ---------- */
+    .card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        margin-bottom: 40px;
+    }
 
-</html>
+    .card-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #05dde9;
+        margin-bottom: 25px;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid #dfeff2;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .form-group input:focus {
+        border-color: #05dde9;
+        box-shadow: 0 0 0 3px rgba(5, 221, 233, 0.2);
+    }
+
+    .submit-btn {
+        margin-top: 20px;
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+        color: #fff;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(5, 221, 233, 0.45);
+    }
+
+    /* ---------- TABLE ---------- */
+    .district-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .district-table th,
+    .district-table td {
+        padding: 14px 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .district-table th {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .district-table tr:nth-child(even) {
+        background: #f6feff;
+    }
+
+    .action-btn {
+        padding: 6px 14px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        margin: 0 4px;
+        display: inline-block;
+    }
+
+    .edit-btn {
+        background: #ffa502;
+        color: #fff;
+    }
+
+    .delete-btn {
+        background: #ff4d4d;
+        color: #fff;
+    }
+
+    .edit-btn:hover {
+        background: #e59400;
+    }
+
+    .delete-btn:hover {
+        background: #e63b3b;
+    }
+</style>
+
+<div class="district-container">
+
+    <!-- ADD / EDIT DISTRICT -->
+    <div class="card">
+        <div class="card-title">District Management</div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>District Name</label>
+                <input type="text" name="txt_district"
+                       value="{{editdata.district_name}}" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Save District</button>
+        </form>
+    </div>
+
+    <!-- DISTRICT LIST -->
+    <table class="district-table">
+        <tr>
+            <th>SI NO</th>
+            <th>District</th>
+            <th>Action</th>
+        </tr>
+        {% for i in dis %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.district_name}}</td>
+            <td>
+                <a href="{% url 'Admin:editdistrict' i.id %}" class="action-btn edit-btn">Edit</a>
+                <a href="{% url 'Admin:deldistrict' i.id %}" class="action-btn delete-btn">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
 {% if msg %}
-    <script>
-        alert("{{msg}}");
-        window.location="{% url 'Admin:District' %}";
-    </script>
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:District' %}";
+</script>
 {% endif %}
-    {% endblock %}
+
+{% endblock %}

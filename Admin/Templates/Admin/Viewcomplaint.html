@@ -1,57 +1,158 @@
-
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1 align="center">Complaints</h1>
-    <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>USER</td>
-            <td>TITLE</td>
-            <td>CONTENT</td>
-            <td>DATE</td>
-            <td>ACTION</td>
-        </tr>
-        {% for i in comp %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user.user_name}}</td>
-            <td>{{i.complaint_title}}</td>
-            <td>{{i.complaint_desc}}</td>
-            <td>{{i.complaint_date}}</td>
-            <td><a href="{% url 'Admin:Reply' i.id %}">Reply</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-    <h2 align="center">Replied Complaints</h2>
-      <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>USER</td>
-            <td>TITLE</td>
-            <td>CONTENT</td>
-            <td>DATE</td>
-            <td>REPLY</td>
-           
-        </tr>
-        {% for i in rcomp %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user.user_name}}</td>
-            <td>{{i.complaint_title}}</td>
-            <td>{{i.complaint_desc}}</td>
-            <td>{{i.complaint_date}}</td>
-            <td>{{i.complaint_reply}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
-    {% endblock %}
+
+<style>
+    body {
+        background: #f4f7fb;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .page-container {
+        max-width: 1200px;
+        margin: 40px auto;
+    }
+
+    .card {
+        background: #ffffff;
+        padding: 25px;
+        margin-bottom: 35px;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .complaint-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .complaint-table thead {
+        background: #30c5f2;
+        color: #ffffff;
+    }
+
+    .complaint-table th,
+    .complaint-table td {
+        padding: 14px 12px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .complaint-table tbody tr {
+        border-bottom: 1px solid #ecf0f1;
+        transition: 0.3s;
+    }
+
+    .complaint-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .reply-btn {
+        padding: 6px 16px;
+        background: #3498db;
+        color: #fff;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .reply-btn:hover {
+        background: #217dbb;
+    }
+
+    .reply-text {
+        color: #27ae60;
+        font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+        .complaint-table th:nth-child(4),
+        .complaint-table td:nth-child(4) {
+            display: none;
+        }
+    }
+</style>
+
+<div class="page-container">
+
+    <!-- Pending Complaints -->
+    <div class="card">
+        <h2>Pending Complaints</h2>
+
+        <table class="complaint-table">
+            <thead>
+                <tr>
+                    <th>SI No</th>
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in comp %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.user.user_name }}</td>
+                    <td>{{ i.complaint_title }}</td>
+                    <td>{{ i.complaint_desc }}</td>
+                    <td>{{ i.complaint_date }}</td>
+                    <td>
+                        <a href="{% url 'Admin:Reply' i.id %}" class="reply-btn">Reply</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No pending complaints</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Replied Complaints -->
+    <div class="card">
+        <h2>Replied Complaints</h2>
+
+        <table class="complaint-table">
+            <thead>
+                <tr>
+                    <th>SI No</th>
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Date</th>
+                    <th>Reply</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in rcomp %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.user.user_name }}</td>
+                    <td>{{ i.complaint_title }}</td>
+                    <td>{{ i.complaint_desc }}</td>
+                    <td>{{ i.complaint_date }}</td>
+                    <td class="reply-text">{{ i.complaint_reply }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No replied complaints</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,39 +1,125 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
-</head>
-<body>
-    <table border="2" align="center">
-        <tr>
-            <td>SI NO</td>
-            <td>Name</td>
-            <td>Email</td>
-            <td>Contact</td>
-            <td>Address</td>
-            <td>District</td>
-            <td>Place</td>
-            <td>Photo</td>
-            <td>Action</td>
-        </tr>
-        {% for i in userdata %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user_name}}</td>
-            <td>{{i.user_email}}</td>
-            <td>{{i.user_contact}}</td>
-            <td>{{i.user_address}}</td>
-            <td>{{i.place.district.district_name}}</td>
-            <td>{{i.place.place_name}}</td>
-            <td><img src="{{i.user_photo.url}}" width="150" alt=""></td>
-            <td></td>
-        </tr>
-        {% endfor %}
+
+<style>
+    body {
+        background: #f4f7fb;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .user-container {
+        max-width: 1200px;
+        margin: 50px auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 18px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+
+    .user-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .user-table thead {
+        background: #34cadb;
+        color: #ffffff;
+    }
+
+    .user-table th,
+    .user-table td {
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .user-table tbody tr {
+        border-bottom: 1px solid #ecf0f1;
+        transition: 0.3s;
+    }
+
+    .user-table tbody tr:hover {
+        background: #f2f8ff;
+    }
+
+    .user-table img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #34b1db;
+    }
+
+    .action-btn {
+        padding: 6px 14px;
+        background: #e74c3c;
+        color: #fff;
+        border-radius: 20px;
+        font-size: 13px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .action-btn:hover {
+        background: #c0392b;
+    }
+
+    @media (max-width: 900px) {
+        .user-table th:nth-child(4),
+        .user-table td:nth-child(4),
+        .user-table th:nth-child(5),
+        .user-table td:nth-child(5) {
+            display: none;
+        }
+    }
+</style>
+
+<div class="user-container">
+
+    <div class="user-title">Registered Users</div>
+
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>SI No</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>District</th>
+                <th>Place</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in userdata %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <img src="{{ i.user_photo.url }}" alt="User Photo">
+                </td>
+                <td>{{ i.user_name }}</td>
+                <td>{{ i.user_email }}</td>
+                <td>{{ i.user_contact }}</td>
+                <td>{{ i.place.district.district_name }}</td>
+                <td>{{ i.place.place_name }}</td>
+                <td>
+                    <a href="#" class="action-btn">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-</body>
-</html>
-    {% endblock %}
+
+</div>
+
+{% endblock %}

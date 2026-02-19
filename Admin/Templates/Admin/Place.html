@@ -1,64 +1,200 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=
-    , initial-scale=1.0">
-    <title>Place</title>
-</head>
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", sans-serif;
+    }
 
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table border="2" align="center">
+    .place-wrapper {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
 
-            <tr>
-                <td>District</td>
-                <td><select name="sel_district" id="sel_district" required>
-                        <option value="">---select---</option>
-                        {% for i in districtdata %}
-                        <option
+    /* ---------- CARD ---------- */
+    .card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        margin-bottom: 40px;
+    }
+
+    .card-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #05dde9;
+        margin-bottom: 25px;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .form-group select,
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid #dfeff2;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .form-group select:focus,
+    .form-group input:focus {
+        border-color: #05dde9;
+        box-shadow: 0 0 0 3px rgba(5, 221, 233, 0.2);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+        color: #ffffff;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(5, 221, 233, 0.45);
+    }
+
+    /* ---------- TABLE ---------- */
+    .place-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .place-table th,
+    .place-table td {
+        padding: 14px 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .place-table th {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .place-table tr:nth-child(even) {
+        background: #f6feff;
+    }
+
+    .action-btn {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        margin: 0 4px;
+        transition: 0.3s;
+    }
+
+    .edit-btn {
+        background: #05dde9;
+        color: #ffffff;
+    }
+
+    .edit-btn:hover {
+        background: #03c7d3;
+    }
+
+    .delete-btn {
+        background: #ff4d4d;
+        color: #ffffff;
+    }
+
+    .delete-btn:hover {
+        background: #e63b3b;
+    }
+</style>
+
+<div class="place-wrapper">
+
+    <!-- ADD / EDIT PLACE -->
+    <div class="card">
+        <div class="card-title">Add / Edit Place</div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>District</label>
+                <select name="sel_district" required>
+                    <option value="">--- Select District ---</option>
+                    {% for i in districtdata %}
+                    <option
                         {% if i.id == editdata.district.id %}
                         selected
                         {% endif %}
-                        value="{{i.id}}">{{i.district_name}}</option>
-                        {% endfor %}
-                    </select></td>
-            </tr>
-            <tr>
-                <td>Place</td>
-                <td><input type="text" name="txt_place" id="txt_place" value="{{editdata.place_name}}" required></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    <table border="2" align="center">
+                        value="{{i.id}}">
+                        {{i.district_name}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Place</label>
+                <input type="text" name="txt_place" value="{{editdata.place_name}}" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Save Place</button>
+        </form>
+    </div>
+
+    <!-- PLACE LIST -->
+    <table class="place-table">
         <tr>
-            <td>SI NO</td>
-            <td>District</td>
-            <td>Place</td>
-            <td>Action</td>
+            <th>SI NO</th>
+            <th>District</th>
+            <th>Place</th>
+            <th>Action</th>
         </tr>
         {% for i in place %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.district.district_name}}</td>
             <td>{{i.place_name}}</td>
-            <td><a href="{% url 'Admin:delplace' i.id %}">DELETE</a>/ <a href="{% url 'Admin:editplace' i.id %}">Edit</a></td>
+            <td>
+                <a href="{% url 'Admin:editplace' i.id %}" class="action-btn edit-btn">Edit</a>
+                <a href="{% url 'Admin:delplace' i.id %}" class="action-btn delete-btn">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+
+</div>
+
 {% if msg %}
-    <script>
-        alert("{{msg}}");
-        window.location="{% url 'Admin:Place' %}";
-    </script>
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:Place' %}";
+</script>
 {% endif %}
-    {% endblock %}
+
+{% endblock %}

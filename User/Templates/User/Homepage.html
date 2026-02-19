@@ -72,7 +72,14 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{% url 'User:Homepage' %}" class="nav-item nav-link active">Home</a>
                 <a href="{% url 'User:Myprofile' %}" class="nav-item nav-link"> Profile</a>
-                <a href="{% url 'User:viewexam' %}" class="nav-item nav-link">Aptitude & Competitive Tests</a>
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-item nav-link">Aptitude & Competitive Tests</a>
+                    
+                    <div class="dropdown-menu fade-down m-0">
+                        <a href="{% url 'User:viewexam' %}" class="dropdown-item">Attend Test</a>
+                        <a href="{% url 'User:my_exam_history' %}" class="dropdown-item">Exam History</a>
+                    </div>
+                </div>
                 <a href="{% url 'User:Notification' %}" class="nav-item nav-link">Exam Alert</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Job</a>

@@ -1,45 +1,182 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Type</title>
-</head>
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table border="1" align="center">
-            <tr>
-                <td>Exam Type</td>
-                <td><input type="text" name="txt_examtype" id="txt_examtype" required value="{{editdata.examtype_name}}"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    <table align="center" border="1">
+
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .examtype-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* ---------- CARD ---------- */
+    .card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        margin-bottom: 40px;
+    }
+
+    .card-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #05dde9;
+        margin-bottom: 25px;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid #dfeff2;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .form-group input:focus {
+        border-color: #05dde9;
+        box-shadow: 0 0 0 3px rgba(5, 221, 233, 0.2);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+        color: #ffffff;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(5, 221, 233, 0.45);
+    }
+
+    /* ---------- TABLE ---------- */
+    .examtype-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .examtype-table th,
+    .examtype-table td {
+        padding: 14px 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .examtype-table th {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .examtype-table tr:nth-child(even) {
+        background: #f6feff;
+    }
+
+    .action-btn {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        margin: 0 3px;
+        display: inline-block;
+    }
+
+    .edit-btn {
+        background: #2ecc71;
+        color: #fff;
+    }
+
+    .delete-btn {
+        background: #ff4d4d;
+        color: #fff;
+    }
+
+    .edit-btn:hover {
+        background: #27ae60;
+    }
+
+    .delete-btn:hover {
+        background: #e63b3b;
+    }
+</style>
+
+<div class="examtype-container">
+
+    <!-- ADD / EDIT EXAM TYPE -->
+    <div class="card">
+        <div class="card-title">
+            {% if editdata %}Edit Exam Type{% else %}Add Exam Type{% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Exam Type Name</label>
+                <input type="text" name="txt_examtype" required
+                       value="{{editdata.examtype_name}}">
+            </div>
+
+            <button type="submit" class="submit-btn">Save</button>
+        </form>
+    </div>
+
+    <!-- EXAM TYPE LIST -->
+    <table class="examtype-table">
         <tr>
-            <td>SI NO</td>
-            <td>Exam Type</td>
-            <td>Action</td>
+            <th>SI NO</th>
+            <th>Exam Type</th>
+            <th>Action</th>
         </tr>
         {% for i in examtype %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.examtype_name}}</td>
-            <td><a href="{% url 'Admin:delext' i.id %}">DELETE</a>/<a href="{% url 'Admin:editext' i.id %}">Edit</a></td>
+            <td>
+                <a href="{% url 'Admin:editext' i.id %}" class="action-btn edit-btn">Edit</a>
+                <a href="{% url 'Admin:delext' i.id %}" class="action-btn delete-btn">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+
+</div>
+
 {% if msg %}
-    <script>
-        alert("{{msg}}");
-        window.location="{% url 'Admin:Examtype' %}";
-    </script>
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:Examtype' %}";
+</script>
 {% endif %}
-    {% endblock %}
+
+{% endblock %}

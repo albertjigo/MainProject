@@ -2,97 +2,205 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruiter Registration</title>
+    <style>
+        /* Unique container for the form */
+        .recruiter-form-container {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Form card */
+        .recruiter-form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .recruiter-form h2 {
+            text-align: center;
+            color: #30c5f2;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* Form fields */
+        .recruiter-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .recruiter-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .recruiter-form input[type="text"],
+        .recruiter-form input[type="email"],
+        .recruiter-form input[type="password"],
+        .recruiter-form input[type="file"],
+        .recruiter-form select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .recruiter-form input:focus,
+        .recruiter-form select:focus {
+            border-color: #30c5f2;
+            outline: none;
+        }
+
+        /* Submit buttons */
+        .recruiter-form .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .recruiter-form input[type="submit"] {
+            background-color: #30c5f2;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 48%;
+        }
+
+        .recruiter-form input[type="submit"]:hover {
+            background-color: #28a3d9;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 480px) {
+            .recruiter-form {
+                padding: 30px 20px;
+            }
+
+            .recruiter-form h2 {
+                font-size: 24px;
+            }
+
+            .recruiter-form .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .recruiter-form input[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table align="center" border="2">
-            <tr>
-                <td>Name</td>
-                <td><input type="text" name="txt_name" id="txt_name" required title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="email" name="txt_email" id="txt_email" required></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" name="txt_password" id="txt_password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"></td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td><input type="text" name="txt_address" id="txt_address" required></td>
-            </tr>
-            <tr>
-                <td>Photo</td>
-                <td><input type="file" name="file_photo" id="file_photo" required></td>
-            </tr>
-            <tr>
-                <td>Proof</td>
-                <td><input type="file" name="file_proof" id="file_proof" required></td>
-            </tr>
-            <tr>
-                <td>Licence</td>
-                <td><input type="file" name="file_licence" id="file_licence" required></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input type="text" name="txt_contact" id="txt_contact" pattern="[7-9]{1}[0-9]{9}" 
-                title="Phone number with 7-9 and remaing 9 digit with 0-9" required></td>
-            </tr>
-            <tr>
-                <td>District</td>
-                <td>
-                    <select name="sel_district" id="sel_district" required>
-                        <option value="">---select---</option>
-                        {% for i in districtdata %}
-                        <option value="{{i.id}}">{{i.district_name}}</option>
-                        {% endfor %}
-                     </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Place</td>
-                <td><select name="sel_place" id="sel_place" required><option>---select---</option></select>
-                
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"><input type="submit" value="Clear">
-                </td>
+    <div class="recruiter-form-container">
+        <form class="recruiter-form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2>Recruiter Registration</h2>
 
-            </tr>
-        </table>
-    </form>
-</body>
+            <div class="form-group">
+                <label for="txt_name">Name</label>
+                <input type="text" name="txt_name" id="txt_name" required title="Name Allows Only Alphabets, Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$">
+            </div>
 
-</html>
+            <div class="form-group">
+                <label for="txt_email">Email</label>
+                <input type="email" name="txt_email" id="txt_email" required>
+            </div>
 
-{% if msg %}
+            <div class="form-group">
+                <label for="txt_password">Password</label>
+                <input type="password" name="txt_password" id="txt_password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+            </div>
+
+            <div class="form-group">
+                <label for="txt_address">Address</label>
+                <input type="text" name="txt_address" id="txt_address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file_photo">Photo</label>
+                <input type="file" name="file_photo" id="file_photo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file_proof">Proof</label>
+                <input type="file" name="file_proof" id="file_proof" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file_licence">Licence</label>
+                <input type="file" name="file_licence" id="file_licence" required>
+            </div>
+
+            <div class="form-group">
+                <label for="txt_contact">Contact</label>
+                <input type="text" name="txt_contact" id="txt_contact" pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaining 9 digits with 0-9" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sel_district">District</label>
+                <select name="sel_district" id="sel_district" required>
+                    <option value="">---select---</option>
+                    {% for i in districtdata %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sel_place">Place</label>
+                <select name="sel_place" id="sel_place" required>
+                    <option>---select---</option>
+                </select>
+            </div>
+
+            <div class="btn-group">
+                <input type="submit" value="Submit">
+                <input type="submit" value="Clear">
+            </div>
+        </form>
+    </div>
+
+    {% if msg %}
     <script>
         alert("{{msg}}");
         window.location="{% url 'Guest:Recruiterregistration' %}";
     </script>
-{% endif %}
+    {% endif %}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $("#sel_district").change(function () {
-        var did = $(this).val();
-        var ur = "{% url 'Guest:ajaxplace' %}"
-        $.ajax({
-            url: ur,
-            data: { did: did, },
-            success: function (data) {
-                $("#sel_place").html(data);
-            },
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $("#sel_district").change(function () {
+            var did = $(this).val();
+            var ur = "{% url 'Guest:ajaxplace' %}"
+            $.ajax({
+                url: ur,
+                data: { did: did },
+                success: function (data) {
+                    $("#sel_place").html(data);
+                },
+            });
         });
-    });
-</script>
+    </script>
+</body>
+</html>
 {% endblock %}

@@ -5,39 +5,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Notes Management</title>
+    <style>
+        /* Unique container for notes table */
+        .notes-table-container {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            padding: 20px;
+            min-height: 80vh;
+        }
+
+        .notes-table-container h1 {
+            text-align: center;
+            color: #30c5f2;
+            margin-bottom: 20px;
+        }
+
+        /* Table styles */
+        .notes-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .notes-table th, .notes-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .notes-table th {
+            background-color: #30c5f2;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .notes-table tr:nth-child(even) {
+            background-color: #f2f9ff;
+        }
+
+        .notes-table tr:hover {
+            background-color: #d0f0ff;
+            transition: 0.3s;
+        }
+
+        .notes-table td {
+            color: #333;
+        }
+
+        /* Links style */
+        .notes-table a {
+            color: #30c5f2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .notes-table a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive table for mobile */
+        @media screen and (max-width: 768px) {
+            .notes-table, .notes-table thead, .notes-table tbody, .notes-table th, .notes-table td, .notes-table tr {
+                display: block;
+            }
+
+            .notes-table th {
+                display: none;
+            }
+
+            .notes-table tr {
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .notes-table td {
+                padding-left: 50%;
+                position: relative;
+                text-align: left;
+            }
+
+            .notes-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                font-weight: bold;
+                color: #30c5f2;
+            }
+        }
+    </style>
 </head>
 <body>
-     <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>User Name</td>
-            <td>Email</td>
-            <td>Title</td>
-            <td>Details</td>
-            <td>File</td>
-            <td>Exam type</td>
-            <td>Action</td>
-        </tr>
-        {% for i in notes %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.user.user_name}}</td>
-            <td>{{i.user.user_email}}</td>
-            <td>{{i.notes_title}}</td>
-            <td>{{i.notes_details}}</td>
-            <td> <a href="{{i.notes_file.url }}">View File</a></td>
-            <td>{{i.examtype.examtype_name}}</td>
-            <td><a href="{% url 'Admin:acceptnotes' i.id %}">Verify</a>|<a href="{% url 'Admin:rejectnotes' i.id %}">Reject</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="notes-table-container">
+        <h1>Notes Management</h1>
+        <table class="notes-table" border="0">
+            <thead>
+                <tr>
+                    <th>SI NO</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Details</th>
+                    <th>File</th>
+                    <th>Exam Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in notes %}
+                <tr>
+                    <td data-label="SI NO">{{ forloop.counter }}</td>
+                    <td data-label="User Name">{{ i.user.user_name }}</td>
+                    <td data-label="Email">{{ i.user.user_email }}</td>
+                    <td data-label="Title">{{ i.notes_title }}</td>
+                    <td data-label="Details">{{ i.notes_details }}</td>
+                    <td data-label="File"><a href="{{ i.notes_file.url }}">View File</a></td>
+                    <td data-label="Exam Type">{{ i.examtype.examtype_name }}</td>
+                    <td data-label="Action">
+                        <a href="{% url 'Admin:acceptnotes' i.id %}">Verify</a> | 
+                        <a href="{% url 'Admin:rejectnotes' i.id %}">Reject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if msg %}
+    <script>
+        alert("{{ msg }}");
+        window.location = "{% url 'Admin:Viewnotes' %}";
+    </script>
+    {% endif %}
 </body>
 </html>
-{% if msg %}
-<script>
-    alert("{{msg}}");
-    window.location = "{% url 'Admin:Viewnotes' %}";
-</script>
-{% endif %}
-    {% endblock %}
+{% endblock %}

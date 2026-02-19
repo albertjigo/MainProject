@@ -1,57 +1,196 @@
 {% extends 'Admin/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notification</title>
-</head>
-<body>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-    <table align="center" border="1">
+
+<style>
+    body {
+        background: #f4fbfc;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .notify-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* ---------- CARD ---------- */
+    .card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        margin-bottom: 40px;
+    }
+
+    .card-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #05dde9;
+        margin-bottom: 25px;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid #dfeff2;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .form-group input:focus {
+        border-color: #05dde9;
+        box-shadow: 0 0 0 3px rgba(5, 221, 233, 0.2);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #05dde9, #03c7d3);
+        color: #ffffff;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(5, 221, 233, 0.45);
+    }
+
+    /* ---------- TABLE ---------- */
+    .notify-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .notify-table th,
+    .notify-table td {
+        padding: 14px 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .notify-table th {
+        background: #05dde9;
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .notify-table tr:nth-child(even) {
+        background: #f6feff;
+    }
+
+    .file-link {
+        color: #05dde9;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .file-link:hover {
+        text-decoration: underline;
+    }
+
+    .delete-btn {
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: #ff4d4d;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .delete-btn:hover {
+        background: #e63b3b;
+    }
+</style>
+
+<div class="notify-container">
+
+    <!-- ADD NOTIFICATION -->
+    <div class="card">
+        <div class="card-title">Add Notification</div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="txt_title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Details</label>
+                <input type="text" name="txt_details" required>
+            </div>
+
+            <div class="form-group">
+                <label>File</label>
+                <input type="file" name="file">
+            </div>
+
+            <div class="form-group">
+                <label>To Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Publish Notification</button>
+        </form>
+    </div>
+
+    <!-- NOTIFICATION LIST -->
+    <table class="notify-table">
         <tr>
-            <td>Title</td>
-            <td><input type="text" name="txt_title" id="txt_title"></td>
-        </tr>
-        <tr>
-            <td>Details</td>
-            <td><input type="text" name="txt_details" id="txt_details"></td>
-        </tr>
-        <tr>
-            <td>File</td>
-            <td><input type="file" name="file" id="file"></td>
-        </tr>
-        <tr>
-            <td>To date</td>
-            <td><input type="date" name="date" id="date"></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="submit"></td>
-        </tr>
-    </table>
-    </form>
-    <table align="center" border="1">
-        <tr>
-            <td>SI NO</td>
-            <td>TITLE</td>
-            <td>DETAILS</td>
-            <td>FILE</td>
-            <td>TO DATE</td>
-            <td>ACTION</td>
+            <th>SI NO</th>
+            <th>Title</th>
+            <th>Details</th>
+            <th>File</th>
+            <th>To Date</th>
+            <th>Action</th>
         </tr>
         {% for i in noti %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.notification_title}}</td>
             <td>{{i.notification_details}}</td>
-            <td><a href="{{i.notification_file.url}}">View file</a></td>
+            <td>
+                <a href="{{i.notification_file.url}}" class="file-link" target="_blank">
+                    View File
+                </a>
+            </td>
             <td>{{i.notification_todate}}</td>
-            <td><a href="{% url 'Admin:deln' i.id %}">Delete</a></td>
+            <td>
+                <a href="{% url 'Admin:deln' i.id %}" class="delete-btn">
+                    Delete
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
-    {% endblock %}
+
+</div>
+
+{% endblock %}

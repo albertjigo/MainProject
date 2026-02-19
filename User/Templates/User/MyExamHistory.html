@@ -4,41 +4,135 @@
 <html>
 <head>
     <title>My Exam History</title>
+    <style>
+        /* Container */
+        .exam-history-container {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .exam-history-container h2 {
+            text-align: center;
+            color: #30c5f2;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        /* Table styling */
+        .exam-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .exam-history-table th, .exam-history-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .exam-history-table th {
+            background-color: #30c5f2;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exam-history-table tr:nth-child(even) {
+            background-color: #f2f9ff;
+        }
+
+        .exam-history-table tr:hover {
+            background-color: #d0f0ff;
+            transition: 0.3s;
+        }
+
+        .exam-history-table td a {
+            color: #30c5f2;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .exam-history-table td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive for mobile */
+        @media screen and (max-width: 768px) {
+            .exam-history-table, 
+            .exam-history-table thead, 
+            .exam-history-table tbody, 
+            .exam-history-table th, 
+            .exam-history-table td, 
+            .exam-history-table tr {
+                display: block;
+            }
+
+            .exam-history-table th {
+                display: none;
+            }
+
+            .exam-history-table tr {
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .exam-history-table td {
+                padding-left: 50%;
+                position: relative;
+                text-align: left;
+            }
+
+            .exam-history-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                font-weight: bold;
+                color: #30c5f2;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<h2>My Exam Attempts</h2>
-
-<table border="1" cellpadding="8" >
-    <tr>
-        <th>#</th>
-        <th>Exam</th>
-        <th>Type</th>
-        <th>Level</th>
-        <th>Score</th>
-        <th>Total Marks</th>
-        <th>Action</th>
-    </tr>
-
-    {% for a in attempts %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ a.examination.exam_name }}</td>
-        <td>{{ a.examination.examtype.examtype_name }}</td>
-        <td>{{ a.examination.level.level_name }}</td>
-        <td>{{ a.total_marks }}</td>
-        <td>{{ a.examination.level.level_duration }}</td>
-        <td>
-            <a href="{% url 'User:viewresult' a.id %}">View Result</a>
-        </td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="7">No exams attended yet</td>
-    </tr>
-    {% endfor %}
-</table>
-
+    <div class="exam-history-container">
+        <h2>My Exam Attempts</h2>
+        <table class="exam-history-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Exam</th>
+                    <th>Type</th>
+                    <th>Level</th>
+                    <th>Score</th>
+                    <th>Total Marks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in attempts %}
+                <tr>
+                    <td data-label="#"> {{ forloop.counter }} </td>
+                    <td data-label="Exam">{{ a.examination.exam_name }}</td>
+                    <td data-label="Type">{{ a.examination.examtype.examtype_name }}</td>
+                    <td data-label="Level">{{ a.examination.level.level_name }}</td>
+                    <td data-label="Score">{{ a.total_marks }}</td>
+                    <td data-label="Total Marks"></td>
+                    <td data-label="Action">
+                        <a href="{% url 'User:viewresult' a.id %}">View Result</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:15px;">No exams attended yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
 {% endblock %}

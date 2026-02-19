@@ -5,26 +5,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Feedback Table</title>
+    <style>
+        /* Unique table container */
+        .feedback-table-container {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            padding: 20px;
+        }
+
+        .feedback-table-container h1 {
+            color: #30c5f2;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .feedback-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .feedback-table th, .feedback-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .feedback-table th {
+            background-color: #30c5f2;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .feedback-table tr:nth-child(even) {
+            background-color: #f2f9ff;
+        }
+
+        .feedback-table tr:hover {
+            background-color: #d0f0ff;
+            transition: 0.3s;
+        }
+
+        .feedback-table td {
+            color: #333;
+        }
+
+        /* Responsive table */
+        @media screen and (max-width: 768px) {
+            .feedback-table, .feedback-table thead, .feedback-table tbody, .feedback-table th, .feedback-table td, .feedback-table tr {
+                display: block;
+            }
+
+            .feedback-table th {
+                display: none;
+            }
+
+            .feedback-table tr {
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .feedback-table td {
+                padding-left: 50%;
+                position: relative;
+                text-align: left;
+            }
+
+            .feedback-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                font-weight: bold;
+                color: #30c5f2;
+            }
+        }
+    </style>
 </head>
 <body>
-    <table border="2">
-        <tr>
-            <td>SI NO</td>
-            <td>CONTENT</td>
-            <td>DATE</td>
-            <td>USER</td>
-        </tr>
-        {% for i in feed %}
-    
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.feedback_content}}</td>
-            <td>{{i.feedback_date}}</td>
-            <td>{{i.user.user_name}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="feedback-table-container">
+        <h1>Feedback Table</h1>
+        <table class="feedback-table" border="0">
+            <thead>
+                <tr>
+                    <th>SI NO</th>
+                    <th>CONTENT</th>
+                    <th>DATE</th>
+                    <th>USER</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in feed %}
+                <tr>
+                    <td data-label="SI NO">{{ forloop.counter }}</td>
+                    <td data-label="CONTENT">{{ i.feedback_content }}</td>
+                    <td data-label="DATE">{{ i.feedback_date }}</td>
+                    <td data-label="USER">{{ i.user.user_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
-    {% endblock %}
+{% endblock %}
