@@ -370,3 +370,12 @@ def Ajaxsearchjob(request):
         job = job.filter(jobcategory_id=jc)
 
     return render(request, "User/Ajaxsearchjob.html", {'job': job})
+def Viewcourse(request):
+    course=tbl_crashcourse.objects.all()
+    return render(request,"User/Viewcourse.html",{"course":course})
+def Viewclass(request):
+    if "uid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        career=tbl_careerguidence.objects.all()
+        return render(request,'User/Viewclass.html',{'career':career})

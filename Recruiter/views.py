@@ -51,7 +51,7 @@ def Changepassword(request):
         recruiterpass = recruiter.recruiter_password
     if request.method=="POST":
         old=request.POST.get('txt_oldpass')
-        new=request.POST.get('txt_newpass')
+        new=request.POST.get('txt_newpass') 
         confirm=request.POST.get('txt_cpass')
         if recruiterpass == old:
             if new == confirm :
@@ -145,4 +145,22 @@ def ajaxchatview(request):
 def clearchat(request):
     tbl_chat.objects.filter(Q(recruiter_from=request.session["rid"]) & Q(user_to=request.GET.get("tid")) | (Q(user_from=request.GET.get("tid")) & Q(recruiter_to=request.session["aid"]))).delete()
     return render(request,"Recruiter/ClearChat.html",{"msg":"Chat Deleted Sucessfully...."})
-
+def Careerguidence(request):
+    if "rid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        career=tbl_careerguidence.objects.all()
+        recruiter=tbl_recruiter.objects.get(id=request.session['rid'])
+    if request.method=="POST":
+        details=request.POST.get("details")
+        photo=request.POST.get("photo")
+        date=request.POST.get("date")
+        time=request.POST.get("time")
+        link=request.POST.get("link")
+        tbl_careerguidence.objects.create(careerguidence_details=details,careerguidence_photo=photo,careerguidence_date=date,careerguidence_time=time,recruiter=recruiter)
+        return render(request,"Recruiter/Careerguidence.html")
+    else:
+        return render(request,"Recruiter/Careerguidence.html",{"career":career})
+def delclass(request,id):
+    tbl_careerguidence.objects.get(id=id).delete()
+    return redirect("Recruiter:Careerguidence")

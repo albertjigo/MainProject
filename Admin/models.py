@@ -43,3 +43,9 @@ class tbl_notification(models.Model):
     notification_details=models.CharField(max_length=50)
     notification_file=models.FileField(upload_to="Assests/Admindocs/Exam/",null=True)
     notification_todate=models.DateField()
+class tbl_crashcourse(models.Model):
+    crashcourse_title=models.CharField(max_length=50)
+    crashcourse_details=models.CharField(max_length=50)
+    crashcourse_photo=models.FileField(upload_to="Assets/Admindoc/course/",null=True)
+    crashcourse_duration=models.CharField(max_length=50)
+    crashcourse_lastdate=models.DateField()

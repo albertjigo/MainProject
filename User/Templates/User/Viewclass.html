@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>SI NO</td>
+            <td>Recruiter Name</td>
+            <td>DETAILS</td>   
+            <td>PHOTO</td>
+            <td>DATE</td>
+            <td>TIME</td>
+            <td>CLASS LINK</td>
+            <td>ACTION</td>
+        </tr>
+        {% for i in career %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.recruiter.recruiter_name}}</td>
+            <td>{{i.careerguidence_details}}</td>
+            <td>{{i.careerguidence_photo}}</td>
+            <td>{{i.careerguidence_date}}</td>
+            <td>{{i.careerguidence_time}}</td>
+            <td>{{i.careerguidence_class}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+    
+</body>
+</html>

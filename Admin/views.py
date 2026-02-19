@@ -388,3 +388,37 @@ def deln(request,id):
 def Viewfeedback(request):
     feed=tbl_feedback.objects.all()
     return render(request,"Admin/Viewfeedback.html",{"feed":feed})
+def Crashcourse(request):
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        course=tbl_crashcourse.objects.all()
+    if request.method=="POST":
+        title=request.POST.get('txt_course')
+        details=request.POST.get('txt_details')
+        photo=request.POST.get('file_photo')
+        duration=request.POST.get('txt_duration')
+        lastdate=request.POST.get('date')
+        tbl_crashcourse.objects.create(crashcourse_title=title,crashcourse_details=details,crashcourse_photo=photo,crashcourse_duration=duration,crashcourse_lastdate=lastdate)
+        return render(request,"Admin/Crashcourse.html",{'msg':'Added'})
+    else:
+        return render(request,"Admin/Crashcourse.html",{"course":course} )
+def delcourse(request,id):
+    tbl_crashcourse.objects.get(id=id).delete()
+    return redirect("Admin:Crashcourse")
+def Viewclass(request):
+    if "aid" not in request.session:
+        return redirect("Guest:Login")
+    else:
+        career=tbl_careerguidence.objects.all()
+        return render(request,'Admin/Viewclass.html',{'career':career})
+def acceptc(request,id):
+    career=tbl_careerguidence.objects.get(id=id)
+    career.careerguidence_status=1
+    career.save()
+    return render(request,'Admin/Viewclass.html',{"msg":'Accepted'})
+def rejectc(request,id):
+    career=tbl_careerguidence.objects.get(id=id)
+    career.careerguidence_status=2
+    career.save()
+    return render(request,'Admin/Viewclass.html',{"msg":'Rejected'})

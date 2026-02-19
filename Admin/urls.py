@@ -53,4 +53,12 @@ urlpatterns = [
     path('Notification/',views.Notification,name="Notification"),
     path('deln/<int:id>',views.deln,name='deln'),
     path('Viewfeedback/',views.Viewfeedback,name="Viewfeedback"),
+    path('Crashcourse/',views.Crashcourse,name="Crashcourse"),
+    path('delcourse/<int:id>',views.delcourse,name='delcourse'),
+    path('Viewclass/',views.Viewclass,name='Viewclass'),
+    path('acceptc/<int:id>',views.acceptc,name='acceptc'),
+    path('rejectc/<int:id>',views.rejectc,name='rejectc'),
+
+
+
 ]

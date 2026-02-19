@@ -37,6 +37,10 @@ urlpatterns = [
     path('Feedback/',views.Feedback,name="Feedback"),
     path('fdel/<int:id>',views.fdel,name='fdel'),
     path('Ajaxsearchjob/',views.Ajaxsearchjob,name="Ajaxsearchjob"),
+    path('Viewcourse/',views.Viewcourse,name="Viewcourse"),
+    path('Viewclass/',views.Viewclass,name="Viewclass   "),
+
+
 
 
   

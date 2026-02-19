@@ -18,4 +18,8 @@ urlpatterns = [
     path('ajaxchat/',views.ajaxchat,name="ajaxchat"),
     path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
     path('clearchat/',views.clearchat,name="clearchat"),
+    path('Careerguidence/',views.Careerguidence,name="Careerguidence"),
+    path('delclass/<int:id>',views.delclass,name='delclass'),
+
+
 ]

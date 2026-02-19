@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <table>
+        <tr>
+            <td>SI NO</td>
+            <td>COURSE TILTE</td>
+            <td>DETAILS</td>
+            <td>PHOTO</td>
+            <td>DATE</td>
+            <td>APPLY DATE</td>
+        </tr>
+        {% for i in course %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.crashcourse_title}}</td>
+            <td>{{i.crashcourse_details}}</td>
+            <td>{% if i.crashcource_photo %}
+                <img src="{{ i.crashcource_photo.url }}" height="50" width="50">
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>{{i.crashcourse_duration}}</td>
+            <td>{{i.crashcourse_lastdate}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

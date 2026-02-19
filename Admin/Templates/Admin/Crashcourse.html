@@ -1,0 +1,76 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+    <table>
+        <tr>
+            <td>Course Tiltle</td>
+            <td><input type="text" name="txt_course" id="txt_course"></td>
+        </tr>
+        <tr>
+            <td>Details</td>
+            <td><input type="text" name="txt_details" id="txt_details"></td>
+        </tr>
+        <tr>
+            <td>Photo</td>
+            <td><input type="file" name="file_photo" id="file_photo"></td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td><input type="text" name="txt_duration" id="txt_duration"></td>
+        </tr>
+        <tr>
+            <td>Last date</td>
+            <td><input type="date" name="date" id="date"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit"></td>
+        </tr>
+    </table>
+    </form>
+    <table>
+        <tr>
+            <td>SI NO</td>
+            <td>COURSE TILTE</td>
+            <td>DETAILS</td>
+            <td>PHOTO</td>
+            <td>DATE</td>
+            <td>APPLY DATE</td>
+            <td>ACTION</td>
+        </tr>
+        {% for i in course %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.crashcourse_title}}</td>
+            <td>{{i.crashcourse_details}}</td>
+            <td>{% if i.crashcource_photo %}
+                <img src="{{ i.crashcource_photo.url }}" height="50" width="50">
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>{{i.crashcourse_duration}}</td>
+            <td>{{i.crashcourse_lastdate}}</td>
+            <td><a href="{% url 'Admin:delcourse' i.id %}" class="action-btn delete-btn">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Admin:District' %}";
+</script>
+{% endif %}
+
+{% endblock %}
