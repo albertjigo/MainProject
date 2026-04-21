@@ -38,10 +38,8 @@ urlpatterns = [
     path('fdel/<int:id>',views.fdel,name='fdel'),
     path('Ajaxsearchjob/',views.Ajaxsearchjob,name="Ajaxsearchjob"),
     path('Viewcourse/',views.Viewcourse,name="Viewcourse"),
-    path('Viewclass/',views.Viewclass,name="Viewclass   "),
-
-
-
-
-  
+    path('Viewclass/',views.Viewclass,name="Viewclass"),
+    path('rating/<int:mid>',views.rating,name="rating"),  
+    path('ajaxstar/',views.ajaxstar,name="ajaxstar"),
+    path('starrating/',views.starrating,name="starrating"), 
 ]

@@ -95,6 +95,24 @@ def Notes(request):
         user=tbl_userreg.objects.get(id=request.session['uid'])
         examtype=tbl_examtype.objects.all()
         notes=tbl_notes.objects.filter(user_id=request.session['uid'])
+        ar = [1, 2, 3, 4, 5]
+        parry = []
+
+        notes=tbl_notes.objects.filter(notes_status=1)
+        for i in notes :
+            tot = 0
+            ratecount = tbl_rating.objects.filter(notes=i.id).count()
+           
+
+        if ratecount > 0:
+            ratedata = tbl_rating.objects.filter(notes=i.id)
+            for j in ratedata:
+                tot += j.rating_data
+            avg = tot // ratecount
+            parry.append(avg)
+        else:
+            parry.append(0)
+    datas = zip(notes, parry)
     if request.method=="POST":
         title=request.POST.get('txt_title')
         details=request.POST.get('txt_details')
@@ -103,7 +121,7 @@ def Notes(request):
         tbl_notes.objects.create(notes_title=title,notes_details=details,notes_file=file,user=user,examtype=examtype)
         return render(request,'User/Notes.html',{'msg':"Inserted"})        
     else:
-        return render(request,'User/Notes.html',{'examtype':examtype,'notes':notes})
+        return render(request,'User/Notes.html',{'examtype':examtype,'notes':datas,'ar':ar})
 def notedel(request,id):
     tbl_notes.objects.get(id=id).delete()
     return redirect("User:Notes")
@@ -111,8 +129,24 @@ def Viewnotes(request):
     if "uid" not in request.session:
         return redirect("Guest:Login")
     else:
+        ar = [1, 2, 3, 4, 5]
+        parry = []
+
         notes=tbl_notes.objects.filter(notes_status=1)
-        return render(request,'User/Viewnotes.html',{'notes':notes})
+        for i in notes :
+            tot = 0
+            ratecount = tbl_rating.objects.filter(notes=i.id).count()
+
+        if ratecount > 0:
+            ratedata = tbl_rating.objects.filter(notes=i.id)
+            for j in ratedata:
+                tot += j.rating_data
+            avg = tot // ratecount
+            parry.append(avg)
+        else:
+            parry.append(0)
+    datas = zip(notes, parry)
+    return render(request,'User/Viewnotes.html',{'notes':datas,'ar':ar})
 def Upload(request,id):
     user=tbl_userreg.objects.get(id=request.session['uid'])
     job=tbl_job.objects.get(id=id)
@@ -379,3 +413,57 @@ def Viewclass(request):
     else:
         career=tbl_careerguidence.objects.all()
         return render(request,'User/Viewclass.html',{'career':career})
+def rating(request,mid):
+    parray=[1,2,3,4,5]
+    mid=mid
+    # wdata=tbl_booking.objects.get(id=mid)
+    
+    counts=0
+    counts=stardata=tbl_rating.objects.filter(notes=mid).count()
+    if counts>0:
+        res=0
+        stardata=tbl_rating.objects.filter(notes=mid).order_by('-datetime')
+        for i in stardata:
+            res=res+i.rating_data
+        avg=res//counts
+        # print(avg)
+        return render(request,"User/Rating.html",{'mid':mid,'data':stardata,'ar':parray,'avg':avg,'count':counts})
+    else:
+         return render(request,"User/Rating.html",{'mid':mid})
+
+def ajaxstar(request):
+    parray=[1,2,3,4,5]
+    rating_data=request.GET.get('rating_data')
+    
+    user_review=request.GET.get('user_review')
+    pid=request.GET.get('pid')
+    # wdata=tbl_booking.objects.get(id=pid)
+    tbl_rating.objects.create(user=tbl_userreg.objects.get(id=request.session['uid']),user_review=user_review,rating_data=rating_data,notes=tbl_notes.objects.get(id=pid))
+    stardata=tbl_rating.objects.filter(notes=pid).order_by('-datetime')
+    return render(request,"User/AjaxRating.html",{'data':stardata,'ar':parray})
+
+def starrating(request):
+    r_len = 0
+    five = four = three = two = one = 0
+    # cdata = tbl_booking.objects.get(id=request.GET.get("pdt"))
+    rate = tbl_rating.objects.filter(notes=request.GET.get("pdt"))
+    ratecount = tbl_rating.objects.filter(notes=request.GET.get("pdt")).count()
+    for i in rate:
+        if int(i.rating_data) == 5:
+            five = five + 1
+        elif int(i.rating_data) == 4:
+            four = four + 1
+        elif int(i.rating_data) == 3:
+            three = three + 1
+        elif int(i.rating_data) == 2:
+            two = two + 1
+        elif int(i.rating_data) == 1:
+            one = one + 1
+        else:
+            five = four = three = two = one = 0
+        # print(i.rating_data)
+        # r_len = r_len + int(i.rating_data)
+    # rlen = r_len // 5
+    # print(rlen)
+    result = {"five":five,"four":four,"three":three,"two":two,"one":one,"total_review":ratecount}
+    return JsonResponse(result)

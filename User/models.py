@@ -56,3 +56,9 @@ class tbl_feedback(models.Model):
     feedback_date=models.DateField(auto_now_add=True)
     feedback_content=models.CharField(max_length=50)
     user=models.ForeignKey(tbl_userreg,on_delete=models.CASCADE)
+class tbl_rating(models.Model):
+    rating_data=models.IntegerField()
+    user=models.ForeignKey(tbl_userreg,on_delete=models.CASCADE)
+    user_review=models.CharField(max_length=500)
+    notes=models.ForeignKey(tbl_notes,on_delete=models.CASCADE)
+    datetime=models.DateTimeField(auto_now_add=True)

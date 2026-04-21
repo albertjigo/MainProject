@@ -1,44 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <table>
-        <tr>
-            <td>SI NO</td>
-            <td>Recruiter Name</td>
-            <td>DETAILS</td>   
-            <td>PHOTO</td>
-            <td>DATE</td>
-            <td>TIME</td>
-            <td>CLASS LINK</td>
-            <td>ACTION</td>
-        </tr>
-        {% for i in career %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.recruiter.recruiter_name}}</td>
-            <td>{{i.careerguidence_details}}</td>
-            <td>{{i.careerguidence_photo}}</td>
-            <td>{{i.careerguidence_date}}</td>
-            <td>{{i.careerguidence_time}}</td>
-            <td>{{i.careerguidence_class}}</td>
-        </tr>
-        {% endfor %}
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .career-container {
+        max-width: 1200px;
+        margin: 50px auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 18px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+
+    .career-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #2c3e50;
+    }
+
+    .career-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .career-table thead {
+        background: #2c3e50;
+        color: #fff;
+    }
+
+    .career-table th,
+    .career-table td {
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .career-table tbody tr {
+        border-bottom: 1px solid #ecf0f1;
+        transition: 0.3s;
+    }
+
+    .career-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .career-table img {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 2px solid #3498db;
+    }
+
+    .class-link {
+        padding: 6px 14px;
+        background: #27ae60;
+        color: #fff;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .class-link:hover {
+        background: #1e8449;
+    }
+
+    @media (max-width: 900px) {
+        .career-table th:nth-child(3),
+        .career-table td:nth-child(3) {
+            display: none;
+        }
+    }
+</style>
+
+<div class="career-container">
+
+    <div class="career-title">Career Guidance Sessions</div>
+
+    <table class="career-table">
+        <thead>
+            <tr>
+                <th>SI No</th>
+                <th>Recruiter</th>
+                <th>Details</th>
+                <th>Photo</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Class Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in career %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.recruiter.recruiter_name }}</td>
+                <td>{{ i.careerguidence_details }}</td>
+                <td>
+                    <img src="{{ i.careerguidence_photo.url }}" alt="Session Photo">
+                </td>
+                <td>{{ i.careerguidence_date }}</td>
+                <td>{{ i.careerguidence_time }}</td>
+                <td>
+                    <a href="{{ i.careerguidence_class }}" target="_blank" class="class-link">
+                        Join Class
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No career guidance sessions available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-</body>
-</html>
-    
-</body>
-</html>
+
+</div>
+
+{% endblock %}

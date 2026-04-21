@@ -10,7 +10,7 @@
     .user-container {
         max-width: 1200px;
         margin: 50px auto;
-        background: #ffffff;
+        background: #f8f8f8;
         padding: 25px;
         border-radius: 18px;
         box-shadow: 0 15px 40px rgba(0,0,0,0.1);
@@ -97,7 +97,7 @@
                 <th>Contact</th>
                 <th>District</th>
                 <th>Place</th>
-                <th>Action</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -112,9 +112,7 @@
                 <td>{{ i.user_contact }}</td>
                 <td>{{ i.place.district.district_name }}</td>
                 <td>{{ i.place.place_name }}</td>
-                <td>
-                    <a href="#" class="action-btn">View</a>
-                </td>
+                
             </tr>
             {% endfor %}
         </tbody>

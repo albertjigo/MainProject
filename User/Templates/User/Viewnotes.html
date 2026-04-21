@@ -1,10 +1,18 @@
 {% extends 'User/Header.html' %}
 {% block content %}
 
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
 <style>
     body {
         background: #f4fbfc;
         font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    .text-warning {
+        color: orange;
     }
 
     .notes-wrapper {
@@ -82,6 +90,7 @@
     }
 
     @media (max-width: 768px) {
+
         .notes-table th,
         .notes-table td {
             font-size: 13px;
@@ -103,10 +112,12 @@
                 <th>Details</th>
                 <th>File</th>
                 <th>Exam Type</th>
+                <th>Rating</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for i in notes %}
+            {% for i,j in notes %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td class="notes-title">{{i.notes_title}}</td>
@@ -115,6 +126,17 @@
                     <a href="{{i.notes_file.url}}">View File</a>
                 </td>
                 <td><span class="notes-type">{{i.examtype.examtype_name}}</span></td>
+                <td>
+                    {% for k in ar %}
+                    {% if k <= j %} <i class="fa-solid fa-star text-warning"></i>
+                        {% else %}
+                        <i class="fa-solid fa-star star-light"></i>
+                        {% endif %}
+                        {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'User:rating' i.id %}">Rating</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

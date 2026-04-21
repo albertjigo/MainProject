@@ -15,7 +15,7 @@
 
     /* ---------- CARD ---------- */
     .card {
-        background: #ffffff;
+        background: #d1ebf2;
         border-radius: 18px;
         padding: 30px;
         box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
@@ -154,7 +154,7 @@
 
             <div class="form-group">
                 <label>To Date</label>
-                <input type="date" name="date" required>
+                <input type="date" id="date" name="date" required>
             </div>
 
             <button type="submit" class="submit-btn">Publish Notification</button>
@@ -192,5 +192,10 @@
     </table>
 
 </div>
+
+<script>
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("date").setAttribute("min", today);
+</script>
 
 {% endblock %}

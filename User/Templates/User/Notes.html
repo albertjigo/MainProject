@@ -1,10 +1,18 @@
 {% extends 'User/Header.html' %}
 {% block content %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
 
 <style>
     body {
         background: linear-gradient(135deg, #eef7ff, #f9fbff);
         font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .text-warning {
+        color: orange;
     }
 
     .cs-notes-wrapper {
@@ -85,7 +93,7 @@
     .cs-notes-header,
     .cs-notes-row {
         display: grid;
-        grid-template-columns: 60px 1.5fr 2fr 1fr 1.5fr 120px;
+        grid-template-columns: 60px 1.5fr 2fr 1fr 1.2fr 120px 100px;
         padding: 14px 18px;
         align-items: center;
     }
@@ -110,10 +118,15 @@
         font-weight: 600;
         text-decoration: none;
     }
+    .star-light {
+        color: #ddd;
+    }   
 
     .cs-notes-link:hover {
         text-decoration: underline;
     }
+
+    
 
     .cs-notes-delete {
         color: #dc3545;
@@ -175,10 +188,11 @@
             <div>Details</div>
             <div>File</div>
             <div>Exam Type</div>
+            <div>Rating</div>
             <div>Action</div>
         </div>
 
-        {% for i in notes %}
+        {% for i,j in notes %}
         <div class="cs-notes-row">
             <div>{{ forloop.counter }}</div>
             <div>{{ i.notes_title }}</div>
@@ -189,6 +203,19 @@
                 </a>
             </div>
             <div>{{ i.examtype.examtype_name }}</div>
+
+            <!-- Rating -->
+            <div>
+                {% for k in ar %}
+               
+                {% if k <= j %} <i class="fa-solid fa-star text-warning"></i>
+                    {% else %}
+                    <i class="fa-solid fa-star star-light"></i>
+                    {% endif %}
+                    {% endfor %}
+            </div>
+
+            <!-- Delete -->
             <div>
                 <a href="{% url 'User:notedel' i.id %}" class="cs-notes-delete">
                     Delete

@@ -13,9 +13,12 @@ def Homepage(request):
     else:
         Admin = tbl_adminreg.objects.get(id=request.session['aid'])
         user=tbl_userreg.objects.count()
+        u=tbl_userreg.objects.all()
         recruiter=tbl_recruiter.objects.count()
-
-        return render(request,"Admin/HomePage.html",{'Admin':Admin,'user':user,'recruiter':recruiter})
+        r=tbl_recruiter.objects.all()
+        exam=tbl_exam.objects.count()
+        complaint=tbl_complaint.objects.count()
+        return render(request,"Admin/HomePage.html",{'Admin':Admin,'user':user,'u':u,'r':r,'recruiter':recruiter,'exam':exam,'complaint':complaint})
 
 def Adminregistration(request):
     data=tbl_adminreg.objects.all()
